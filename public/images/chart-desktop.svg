@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+              <line x1="50" y1="350" x2="550" y2="350" stroke="#888" stroke-width="1"></line>
+              <line x1="50" y1="50" x2="50" y2="350" stroke="#888" stroke-width="1"></line>
+              <g stroke="#ccc" stroke-dasharray="2,2">
+                <line x1="50" y1="50" x2="550" y2="50"></line>
+                <line x1="50" y1="150" x2="550" y2="150"></line>
+                <line x1="50" y1="250" x2="550" y2="250"></line>
+              </g>
+              <text x="10" y="355" font-size="12">0%</text>
+              <text x="10" y="255" font-size="12">10%</text>
+              <text x="10" y="155" font-size="12">20%</text>
+              <text x="10" y="55" font-size="12">30%</text>
+              <text x="50" y="370" font-size="12">Янв</text>
+              <text x="150" y="370" font-size="12">Мар</text>
+              <text x="250" y="370" font-size="12">Май</text>
+              <text x="350" y="370" font-size="12">Июл</text>
+              <text x="450" y="370" font-size="12">Сен</text>
+              <text x="530" y="370" font-size="12">Дек</text>
+              <line x1="50" y1="350" x2="550" y2="50" stroke="#FD6585" stroke-width="2"></line>
+            </svg>

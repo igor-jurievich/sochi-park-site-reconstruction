@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200">
+              <line x1="30" y1="160" x2="300" y2="160" stroke="#888" stroke-width="1"></line>
+              <line x1="30" y1="30" x2="30" y2="160" stroke="#888" stroke-width="1"></line>
+              <g stroke="#ccc" stroke-dasharray="2,2">
+                <line x1="30" y1="30" x2="300" y2="30"></line>
+                <line x1="30" y1="73" x2="300" y2="73"></line>
+                <line x1="30" y1="116" x2="300" y2="116"></line>
+              </g>
+              <text x="5" y="165" font-size="12">0%</text>
+              <text x="5" y="35" font-size="12">30%</text>
+              <text x="5" y="78" font-size="12">20%</text>
+              <text x="5" y="121" font-size="12">10%</text>
+              <text x="30" y="180" font-size="12">Зима</text>
+              <text x="120" y="180" font-size="12">Весна</text>
+              <text x="210" y="180" font-size="12">Лето</text>
+              <text x="280" y="180" font-size="12">Осень</text>
+              <line x1="30" y1="160" x2="300" y2="30" stroke="#FD6585" stroke-width="2"></line>
+            </svg>
