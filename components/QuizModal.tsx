@@ -11,7 +11,7 @@ type Answers = Partial<Record<QuizQuestionKey, string>> & { messenger?: string }
 
 const progress: Partial<Record<Stage, number>> = { rooms: 1, finish: 2, promo: 3, messenger: 4, contact: 5 };
 const backMap: Partial<Record<Stage, Stage>> = { rooms: 'purpose', finish: 'rooms', promo: 'finish', messenger: 'promo', contact: 'messenger' };
-const giftPrizes = ['💸 Кешбэк 100 000 ₽*', '🛋️ Сертификат Hoff 50 000 ₽*', '🏦 Бесплатное одобрение ипотеки'];
+const giftPrizes = ['💸 Кешбэк 100 000 ₽*', '🇹🇷 Турция — отель 5★, неделя*', '🏦 Бесплатное одобрение ипотеки'];
 const giftReelItems = Array.from({ length: 36 }, (_, index) => giftPrizes[index % giftPrizes.length]);
 const giftReelStopStep = 30;
 
@@ -86,14 +86,14 @@ export function QuizModal({ open, initialPurpose, successPath, onClose }: { open
   const startGift = () => {
     if (giftSpinning) return;
     setGiftSpinning(true);
-    // Move through ten complete prize cycles and land with Hoff in the
+    // Move through ten complete prize cycles and land on the Turkey trip in the
     // highlighted middle row. The transition is handled by the reel track.
     setGiftReelStep(giftReelStopStep);
     const winTimer = window.setTimeout(() => {
       sessionStorage.setItem('sochi-gift-won', '1');
       setWon(true);
       setStage('giftWin');
-      const continueTimer = window.setTimeout(() => setStage('promo'), 3500);
+      const continueTimer = window.setTimeout(() => setStage('promo'), 5000);
       timers.current.push(continueTimer);
     }, 4400);
     timers.current.push(winTimer);
@@ -150,7 +150,7 @@ export function QuizModal({ open, initialPurpose, successPath, onClose }: { open
           <button type="button" className="quiz-close" onClick={onClose} aria-label="Закрыть">×</button>
         </div>
 
-        {won && !['gift','giftWin','purpose','rooms','finish'].includes(stage) ? <div className="gift-pin">🎁 Подарок: Сертификат Hoff 50 000 ₽</div> : null}
+        {won && !['gift','giftWin','purpose','rooms','finish'].includes(stage) ? <div className="gift-pin">🎁 Подарок: Турция 🇹🇷 — отель 5★ на неделю</div> : null}
 
         {question ? (
           <div className={`quiz-question ${question.key === 'purpose' ? 'purpose-question' : ''}`}>
@@ -181,7 +181,7 @@ export function QuizModal({ open, initialPurpose, successPath, onClose }: { open
         ) : null}
 
         {stage === 'giftWin' ? (
-          <div className="gift-win"><div>🎉</div><h2>Поздравляем!<br />Вы выиграли</h2><p>🎁 <em>Сертификат Hoff</em><strong>50 000 ₽*</strong></p><small>* выдаётся при приобретении квартиры</small></div>
+          <div className="gift-win"><div className="gift-celebration">🎉</div><h2>Поздравляем!<br />Вы выиграли поездку</h2><div className="travel-certificate"><img className="travel-certificate-bg" src="/images/turkey-gift-certificate-bg.webp" alt="" /><div className="travel-certificate-copy"><img className="travel-certificate-logo" src="/logos/oop-logo-on-dark.svg" alt="Объединённый отдел продаж" /><span>ПОДАРОЧНЫЙ СЕРТИФИКАТ</span><strong>ПОЕЗДКА В<br /><b>ТУРЦИЮ 🇹🇷</b></strong><em>ОТЕЛЬ 5★ · НА НЕДЕЛЮ</em><small>* выдаётся при приобретении квартиры</small></div></div></div>
         ) : null}
 
         {stage === 'bridge' ? (

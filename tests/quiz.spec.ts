@@ -69,7 +69,7 @@ test('mobile modal has no horizontal overflow', async ({ page }) => {
   expect(overflow).toBe(false);
 });
 
-test('gift reel moves through prize rows before landing on Hoff', async ({ page }) => {
+test('gift reel moves through prize rows before landing on the Turkey trip', async ({ page }) => {
   await gotoReady(page);
   await page.getByRole('button', { name: 'Жить', exact: true }).click();
   await page.getByRole('button', { name: 'Студия', exact: true }).click();
@@ -88,6 +88,8 @@ test('gift reel moves through prize rows before landing on Hoff', async ({ page 
   expect(firstMove).toBeLessThan(before - 1);
   expect(secondMove).toBeLessThan(firstMove - 1);
   await expect(page.getByRole('button', { name: 'Определяем приз…' })).toBeDisabled();
+  await expect(page.getByText('ТУРЦИЮ 🇹🇷', { exact: true })).toBeVisible({ timeout: 5000 });
+  await expect(page.locator('.travel-certificate-bg')).toHaveAttribute('src', '/images/turkey-gift-certificate-bg.webp');
 });
 
 test('every short-page quiz answer advances and Back restores its question', async ({ page }) => {
