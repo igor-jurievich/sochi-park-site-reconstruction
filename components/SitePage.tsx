@@ -23,13 +23,14 @@ function PaymentCard({ title, subtitle, value, suffix, bullets, onOpen }: { titl
 export default function SitePage() {
   const [quizOpen, setQuizOpen] = useState(false);
   const [initialPurpose, setInitialPurpose] = useState<string | undefined>();
+  const [quizSuccessPath, setQuizSuccessPath] = useState('/spasibo.html?region=eu');
   const [videoOpen, setVideoOpen] = useState(false);
   const [phraseIndex, setPhraseIndex] = useState(1);
 
   useEffect(() => {
     document.documentElement.dataset.appReady = 'true';
     const phraseTimer = window.setInterval(() => setPhraseIndex((index) => (index + 1) % heroPhrases.length), 2500);
-    const quizTimer = window.setTimeout(() => { setInitialPurpose(undefined); setQuizOpen(true); }, 17000);
+    const quizTimer = window.setTimeout(() => { setInitialPurpose(undefined); setQuizSuccessPath('/spasibo2.html?region=eu'); setQuizOpen(true); }, 17000);
     return () => { delete document.documentElement.dataset.appReady; window.clearInterval(phraseTimer); window.clearTimeout(quizTimer); };
   }, []);
 
@@ -40,7 +41,7 @@ export default function SitePage() {
     return () => document.removeEventListener('keydown', close);
   }, [videoOpen]);
 
-  const openQuiz = (purpose?: string) => { setInitialPurpose(purpose); setQuizOpen(true); };
+  const openQuiz = (purpose?: string) => { setInitialPurpose(purpose); setQuizSuccessPath('/spasibo.html?region=eu'); setQuizOpen(true); };
 
   return <>
     <main>
@@ -57,12 +58,12 @@ export default function SitePage() {
 
       <section className="payments-section" id="pay"><div className="content"><h2>Удобные и гибкие способы оплаты</h2><div className="payment-grid"><PaymentCard title="Ипотека" subtitle="С гос поддержкой" value="0%" suffix="год" bullets={['От 0% первоначальный взнос','До 25 лет','10 банков']} onOpen={() => openQuiz()} /><PaymentCard title="Наличные" subtitle="Действует акция" value="-15 000" suffix="/м2" bullets={['Оформление в росреестре','Эскроу-счета']} onOpen={() => openQuiz()} /><PaymentCard title="Рассрочка" subtitle="Если нет всех денег" value="0%" suffix="/год" bullets={['6 мес без переплат','От 20% первоначальный взнос']} onOpen={() => openQuiz()} /></div></div></section>
 
-      <section className="contact-section" id="contact"><div className="content"><div><h2>АДРЕС И КАРТА</h2><p><strong>г. Сочи, Ясногорская, 16/8</strong><br />Пн-Пт: с 9:00 до 18:00<br />Сб: с 10:00 до 17:00<br />Вс: с 10:00 до 16:00<br /><a href="tel:+78001001774">Телефон: +7 (800) 100-1774</a></p></div><Image src="/images/map.webp" alt="Карта — Ясногорская улица, 16/8" width={1200} height={675} /></div></section>
+      <section className="contact-section" id="contact"><div className="content"><div><h2>АДРЕС И КАРТА</h2><p><strong>г. Сочи, Ясногорская, 16/8</strong><br />Пн-Пт: с 9:00 до 18:00<br />Сб: с 10:00 до 17:00<br />Вс: с 10:00 до 16:00<br /><a href="tel:+78001001774">Телефон: +7 (800) 100-1774</a></p></div><Image src="/images/map.webp" alt="Карта — Ясногорская улица, 16/8" width={600} height={400} /></div></section>
     </main>
 
     <footer className="site-footer" id="footer"><div className="content"><div className="footer-top"><div className="footer-about"><Image src="/logos/logo.webp" alt="Сочи Парк" width={300} height={100} /><p>Любая информация, представленная на данном сайте, носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями статьи 437 ГК РФ.</p></div><nav><div><h3>О ЖК</h3><a href="#pricesAndAssortment">Цены и ассортимент</a><a href="#live">О комплексе</a><a href="#pay">Способы оплаты</a></div><div><h3>ИНВЕСТОРУ</h3><a href="#investor">Доходность</a></div></nav></div><div className="footer-bottom"><p>© 2025 ООО «Элитный Сочи»</p><p>ИНН 2320219067 | ОГРН 1142366002899</p><p>354000, Краснодарский край, г. Сочи, ул. Пластунская, д. 70</p><p>E-mail по вопросам обработки персональных данных: <a href="mailto:privacy@sochipark-info.ru">privacy@sochipark-info.ru</a></p><p><a href="/privacy.html">Политика обработки ПДн</a> | <a href="/policy.html">Политика конфиденциальности</a></p></div></div></footer>
 
     {videoOpen ? <div className="video-modal" role="dialog" aria-modal="true" aria-label="Видео о жилом комплексе" onMouseDown={(event) => { if (event.target === event.currentTarget) setVideoOpen(false); }}><div><button type="button" onClick={() => setVideoOpen(false)} aria-label="Закрыть">×</button><video src="/video/complex-tour.mp4" controls autoPlay playsInline /></div></div> : null}
-    <QuizModal open={quizOpen} initialPurpose={initialPurpose} onClose={() => { setQuizOpen(false); setInitialPurpose(undefined); }} />
+    <QuizModal open={quizOpen} initialPurpose={initialPurpose} successPath={quizSuccessPath} onClose={() => { setQuizOpen(false); setInitialPurpose(undefined); }} />
   </>;
 }

@@ -7,13 +7,13 @@ export default defineConfig({
   fullyParallel: false,
   reporter: 'line',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:4173',
     channel: 'chrome',
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: 'npm run dev',
-    url: 'http://127.0.0.1:3000',
+    command: 'npm run dev -- --port 4173',
+    url: 'http://localhost:4173',
     reuseExistingServer: true,
     timeout: 60_000,
   },

@@ -5,7 +5,8 @@
 html { scroll-behavior: smooth; }
 body { margin:0; color:var(--text); background:#fff; font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif; }
 button,input,select { font:inherit; }
-.hero { position:relative; min-height:954px; color:#fff; background:linear-gradient(90deg,rgba(0,0,0,.72),rgba(0,0,0,.22)),url('/backgrounds/video-bg.webp') center/cover no-repeat; overflow:hidden; }
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid #ff9500; outline-offset:3px; }
+.hero { position:relative; height:max(954px,100vh); min-height:954px; color:#fff; background-image:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.7) 50%,#000),url('/backgrounds/video-bg.webp'); background-position:center; background-size:cover; background-repeat:no-repeat; overflow:hidden; }
 .hero-header { position:absolute; z-index:2; inset:0 0 auto; height:80px; padding:7px 48px; }
 .hero-header img { width:176px; height:auto; }
 .hero-inner { position:relative; z-index:1; width:min(1000px,calc(100% - 40px)); margin:0 auto; padding-top:120px; text-align:center; }
@@ -19,7 +20,7 @@ button,input,select { font:inherit; }
 .purpose-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 .purpose-grid button { min-height:61px; border:0; border-radius:8px; color:#fff; background:#2f67ef; font-size:16px; font-weight:700; cursor:pointer; box-shadow:0 2px 2px rgba(0,0,0,.22); }
 .purpose-grid button:hover { background:#1c56e8; }
-.purpose-card p { margin:10px 0 0; color:var(--accent); font-size:14px; }
+.purpose-card p { display:flex; align-items:center; justify-content:center; gap:6px; margin:10px 0 0; color:var(--accent); font-size:14px; }
 .purpose-card p strong { color:#101010; font-style:italic; }
 .trust-row { display:flex; align-items:center; justify-content:center; gap:14px; margin-top:45px; color:#eee; font-size:16px; line-height:1.1; }
 .trust-row span { display:inline-flex; align-items:center; gap:8px; }
@@ -27,24 +28,24 @@ button,input,select { font:inherit; }
 .trust-row b { display:inline-grid; place-items:center; width:22px; height:22px; border-radius:4px; background:rgba(255,255,255,.35); }
 .trust-row img { width:24px; height:24px; filter:grayscale(1); opacity:.9; }
 @media (max-width:768px) {
-  .hero { min-height:978px; background-position:58% center; }
+  .hero { min-height:978px; background-position:center,calc(40% - 50px) center; }
   .hero-header { height:80px; padding:7px 19px; }
   .hero-header img { width:166px; }
   .hero-inner { width:100%; padding:90px 20px 0; text-align:left; }
   .hero h1 { font-size:40px; line-height:1.12; letter-spacing:-.8px; text-shadow:0 2px 2px rgba(0,0,0,.75); }
-  .hero-rotator { display:none; }
-  .hero-finance { display:block; width:190px; margin:118px 0 34px; }
+  .hero-rotator { display:block; min-height:40px; margin:14px 0 0; font-size:32px; line-height:1.24; text-align:left; }
+  .hero-finance { display:block; width:190px; margin:64px 0 34px; }
   .hero-finance>div { margin-top:16px; padding-top:13px; }
   .hero-finance span { font-size:16px; }
   .hero-finance strong { font-size:28px; white-space:nowrap; }
   .purpose-card { width:350px; max-width:100%; margin:0 auto; padding:16px 16px 12px; text-align:center; }
   .purpose-grid { gap:8px; }
   .purpose-grid button { min-height:66px; font-size:18px; }
-  .trust-row { flex-wrap:wrap; width:350px; max-width:100%; margin:35px auto 0; gap:12px; font-size:15px; }
-  .trust-row img { width:22px; height:22px; }
+  .trust-row { flex-wrap:wrap; width:350px; max-width:100%; margin:35px auto 0; gap:14px; font-size:15px; }
+  .trust-row img { width:24px; height:24px; }
 }
 
-.content { width:min(1114px,calc(100% - 40px)); margin:0 auto; }
+.content { width:min(1140px,calc(100% - 40px)); margin:0 auto; }
 .blue-button { position:relative; overflow:hidden; border:0; border-radius:2px; color:#fff; background:#153bff; font-weight:600; letter-spacing:2px; cursor:pointer; }
 .blue-button::after { content:""; position:absolute; inset:-60% auto -60% -55%; width:28%; transform:rotate(22deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,.62),transparent); animation:button-shine 3.5s ease-in-out infinite; }
 .blue-button:hover { background:#0e31e5; }
@@ -52,7 +53,7 @@ button,input,select { font:inherit; }
 @keyframes button-shine { 0%,58%{left:-55%} 86%,100%{left:130%} }
 .section-cta { width:100%; min-height:86px; padding:17px 18px; font-size:16px; line-height:1.55; text-transform:uppercase; }
 
-.prices-section { min-height:802px; padding:50px 0 40px; background:#fff; }
+.prices-section { min-height:825px; padding:50px 0 40px; background:#fff; }
 .prices-section h2,.payments-section h2 { margin:0 0 28px; text-align:center; color:#1e2022; font-size:60px; line-height:1.1; font-weight:600; letter-spacing:-2px; }
 .apartment-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
 .apartment-card { border:1px solid #aeb1b5; background:#fff; }
@@ -73,7 +74,7 @@ button,input,select { font:inherit; }
 .video-section button { width:90px; height:90px; padding:0; border:0; border-radius:50%; background:transparent; cursor:pointer; }
 .video-section button img { width:90px; height:90px; }
 
-.investor-section { min-height:1028px; padding:50px 0 40px; text-align:center; background:#fff; }
+.investor-section { min-height:1022px; padding:50px 0 40px; text-align:center; background:#fff; }
 .eyebrow { margin:0 0 7px; text-transform:uppercase; font-size:14px; letter-spacing:.5px; }
 .investor-section h2 { margin:0; font-size:60px; line-height:1.1; font-weight:600; letter-spacing:-1.8px; }
 .investor-section h2+p { margin:23px 0 46px; font-size:17px; color:#555; }
@@ -82,7 +83,7 @@ button,input,select { font:inherit; }
 .investor-section picture img { display:block; width:100%; height:auto; }
 .investor-section .section-cta { width:270px; min-height:62px; }
 
-.payments-section { min-height:780px; padding:50px 0 40px; background:#f7f9fb; }
+.payments-section { min-height:803px; padding:50px 0 40px; background:#f7f9fb; }
 .payments-section h2 { margin-bottom:28px; }
 .payment-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:29px; }
 .payment-card { min-height:606px; display:flex; flex-direction:column; padding:47px 23px 40px; background:#fff; box-shadow:0 10px 24px rgba(20,40,80,.05); }
@@ -247,4 +248,76 @@ button,input,select { font:inherit; }
   .hero h1 { font-size:40px; }
   .purpose-card,.trust-row { width:350px; }
   .content { width:calc(100% - 60px); }
+}
+
+@media (min-width:769px) and (max-width:1100px) {
+  .prices-section { min-height:793px; }
+  .payments-section { min-height:911px; }
+  .contact-section { min-height:364px; }
+  .contact-section img { height:264px; }
+  .site-footer { min-height:626px; }
+}
+
+@media (min-width:769px) and (max-width:1050px) {
+  .hero { height:946px; min-height:946px; }
+  .apartment-image { height:349px; }
+}
+
+@media (max-width:768px) {
+  .hero { height:100vh; min-height:0; }
+  .contact-section { min-height:0; }
+  .contact-section img { height:auto; aspect-ratio:3/2; }
+  .footer-top { padding-bottom:53px; }
+}
+
+@media (min-width:431px) and (max-width:768px) {
+  .content { width:calc(100% - 40px); }
+  .prices-section { min-height:717px; }
+  .apartment-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .apartment-card { margin-bottom:0; }
+  .apartment-image { height:250px; padding-top:38px; }
+  .apartment-copy { padding:0 16px 24px; }
+  .apartment-copy small { margin-bottom:24px; }
+  .investor-section { min-height:885px; }
+  .payments-section { min-height:1851px; }
+  .payment-card { min-height:480px; margin-bottom:40px; }
+  .contact-section { min-height:694px; }
+  .contact-section .content { width:640px; max-width:calc(100% - 40px); }
+  .contact-section img { height:383px; aspect-ratio:auto; }
+  .site-footer { min-height:674px; }
+  .footer-top { padding-bottom:0; }
+}
+
+@media (max-width:430px) {
+  .prices-section { min-height:calc(195vw + 1227.5px); }
+  .investor-section { min-height:calc(953px - 48vw); }
+  .payments-section { min-height:calc(2581px - 160vw); }
+  .payment-card { margin-bottom:33px; }
+  .contact-section .content { gap:2px; }
+  .site-footer { min-height:786px; }
+}
+
+@media (max-width:420px) {
+  .hero { min-height:978px; }
+}
+
+@media (max-width:380px) {
+  .hero { min-height:1024px; }
+  .prices-section { min-height:1943px; }
+  .apartment-image { height:333px; }
+  .investor-section { min-height:781px; }
+  .footer-top { padding-bottom:32px; }
+  .site-footer { min-height:809px; }
+}
+
+@media (max-width:390px) {
+  .payments-section { min-height:1957px; }
+}
+
+@media (max-width:365px) {
+  .hero { min-height:1024px; }
+  .prices-section { min-height:1958px; }
+  .investor-section { min-height:791px; }
+  .payments-section { min-height:2101px; }
+  .site-footer { min-height:865px; }
 }
