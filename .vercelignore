@@ -1,0 +1,14 @@
+.git
+.next
+.vinext
+.wrangler
+dist
+node_modules
+outputs
+research
+test-results
+tests
+work
+playwright.config.ts
+RECONSTRUCTION-REPORT.md
+*.tsbuildinfo
