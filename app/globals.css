@@ -2,9 +2,10 @@
 
 :root { --primary:#3478f6; --primary-deep:#1438ff; --accent:#ff8a00; --text:#1e2022; --muted:#5f6368; --surface-muted:#f7f9fb; }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin:0; color:var(--text); background:#fff; font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif; }
+html { max-width:100%; overflow-x:hidden; scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body { max-width:100%; margin:0; overflow-x:hidden; color:var(--text); background:#fff; font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif; }
 button,input,select { font:inherit; }
+button { -webkit-appearance:none; appearance:none; }
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid #ff9500; outline-offset:3px; }
 .hero { position:relative; height:max(954px,100vh); min-height:954px; color:#fff; background-image:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.7) 50%,#000),url('/backgrounds/video-bg.webp'); background-position:center; background-size:cover; background-repeat:no-repeat; overflow:hidden; }
 .hero-header { position:absolute; z-index:2; inset:0 0 auto; height:80px; padding:7px 48px; }
@@ -12,6 +13,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .hero-inner { position:relative; z-index:1; width:min(1000px,calc(100% - 40px)); margin:0 auto; padding-top:120px; text-align:center; }
 .hero h1 { margin:0; font-size:72px; line-height:1.15; letter-spacing:-2px; font-weight:700; text-shadow:0 2px 2px rgba(0,0,0,.55); }
 .hero-rotator { min-height:66px; margin:12px 0 54px; font-size:50px; line-height:1.2; font-style:italic; text-shadow:0 2px 2px rgba(0,0,0,.65); }
+.hero-cursor { display:inline-block; animation:cursor-blink .8s steps(1,end) infinite; }
+@keyframes cursor-blink { 50% { opacity:0; } }
 .hero-finance { display:grid; grid-template-columns:1fr 1fr; width:490px; margin:0 auto 28px; gap:42px; text-align:left; }
 .hero-finance>div { border-top:3px solid var(--accent); padding-top:14px; }
 .hero-finance span { display:block; font-size:18px; font-weight:700; letter-spacing:2px; }
@@ -28,12 +31,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .trust-row b { display:inline-grid; place-items:center; width:22px; height:22px; border-radius:4px; background:rgba(255,255,255,.35); }
 .trust-row img { width:24px; height:24px; filter:grayscale(1); opacity:.9; }
 @media (max-width:768px) {
-  .hero { min-height:978px; background-position:center,calc(40% - 50px) center; }
+  .hero { height:auto; min-height:max(978px,100svh); background-position:center,calc(40% - 50px) center; }
   .hero-header { height:80px; padding:7px 19px; }
   .hero-header img { width:166px; }
   .hero-inner { width:100%; padding:90px 20px 0; text-align:left; }
   .hero h1 { font-size:40px; line-height:1.12; letter-spacing:-.8px; text-shadow:0 2px 2px rgba(0,0,0,.75); }
-  .hero-rotator { display:block; min-height:40px; margin:14px 0 0; font-size:32px; line-height:1.24; text-align:left; }
+  .hero-rotator { display:block; height:40px; min-height:40px; margin:14px 0 0; font-size:32px; line-height:1.24; text-align:left; }
   .hero-finance { display:block; width:190px; margin:64px 0 34px; }
   .hero-finance>div { margin-top:16px; padding-top:13px; }
   .hero-finance span { font-size:16px; }
@@ -56,16 +59,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .prices-section { min-height:825px; padding:50px 0 40px; background:#fff; }
 .prices-section h2,.payments-section h2 { margin:0 0 28px; text-align:center; color:#1e2022; font-size:60px; line-height:1.1; font-weight:600; letter-spacing:-2px; }
 .apartment-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
-.apartment-card { border:1px solid #aeb1b5; background:#fff; }
+.apartment-card { display:flex; min-width:0; flex-direction:column; overflow:hidden; border:1px solid #aeb1b5; background:#fff; }
 .apartment-image { position:relative; height:375px; padding:50px 14px 0; }
-.apartment-image>img { width:100%; height:100%; object-fit:contain; }
+.apartment-image>img { display:block; width:100%; height:100%; object-fit:contain; }
 .badges { position:absolute; top:10px; right:10px; display:flex; flex-direction:column; align-items:flex-end; gap:5px; }
 .badges span { padding:3px 7px; border-radius:3px; color:#fff; background:#28762d; font-size:11px; font-weight:700; }
 .badges span+span { background:#535860; }
-.apartment-copy { padding:0 24px 42px; color:#444; }
+.apartment-copy { display:flex; flex:1; flex-direction:column; padding:0 24px 42px; color:#444; }
 .apartment-copy>p { margin:17px 0 8px; font-size:13px; }
 .apartment-copy h3 { margin:0 0 2px; font-size:18px; line-height:1.35; }
 .apartment-copy small { display:block; margin-bottom:41px; font-size:12px; }
+.apartment-copy .section-cta { margin-top:auto; }
 
 .video-section { position:relative; height:400px; color:#fff; text-align:center; background:linear-gradient(rgba(0,0,0,.42),rgba(0,0,0,.42)),url('/backgrounds/hero.webp') center/cover no-repeat; }
 .video-section>div { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; }
@@ -247,6 +251,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 @media (max-width:420px) {
   .hero-inner { padding-left:20px; padding-right:20px; }
   .hero h1 { font-size:40px; }
+  .hero-rotator { height:80px; min-height:80px; }
   .purpose-card,.trust-row { width:350px; }
   .content { width:calc(100% - 60px); }
 }
@@ -265,13 +270,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 }
 
 @media (max-width:768px) {
-  .hero { height:100vh; min-height:0; }
   .contact-section { min-height:0; }
   .contact-section img { height:auto; aspect-ratio:3/2; }
   .footer-top { padding-bottom:53px; }
 }
 
-@media (min-width:431px) and (max-width:768px) {
+@media (min-width:700px) and (max-width:768px) {
   .content { width:calc(100% - 40px); }
   .prices-section { min-height:717px; }
   .apartment-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }

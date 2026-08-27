@@ -25,13 +25,58 @@ export default function SitePage() {
   const [initialPurpose, setInitialPurpose] = useState<string | undefined>();
   const [quizSuccessPath, setQuizSuccessPath] = useState('/spasibo.html?region=eu');
   const [videoOpen, setVideoOpen] = useState(false);
-  const [phraseIndex, setPhraseIndex] = useState(1);
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [typedPhrase, setTypedPhrase] = useState('');
 
   useEffect(() => {
     document.documentElement.dataset.appReady = 'true';
-    const phraseTimer = window.setInterval(() => setPhraseIndex((index) => (index + 1) % heroPhrases.length), 2500);
     const quizTimer = window.setTimeout(() => { setInitialPurpose(undefined); setQuizSuccessPath('/spasibo2.html?region=eu'); setQuizOpen(true); }, 17000);
-    return () => { delete document.documentElement.dataset.appReady; window.clearInterval(phraseTimer); window.clearTimeout(quizTimer); };
+    return () => { delete document.documentElement.dataset.appReady; window.clearTimeout(quizTimer); };
+  }, []);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const reducedMotionTimer = window.setTimeout(() => setTypedPhrase(heroPhrases[0]), 0);
+      return () => window.clearTimeout(reducedMotionTimer);
+    }
+
+    let active = true;
+    let currentPhrase = 0;
+    let character = 0;
+    let deleting = false;
+    let timer = 0;
+
+    const typeNextCharacter = () => {
+      if (!active) return;
+      const phrase = heroPhrases[currentPhrase];
+
+      if (!deleting) {
+        character += 1;
+        setPhraseIndex(currentPhrase);
+        setTypedPhrase(phrase.slice(0, character));
+        if (character >= phrase.length) {
+          deleting = true;
+          timer = window.setTimeout(typeNextCharacter, 1800);
+        } else {
+          timer = window.setTimeout(typeNextCharacter, 65);
+        }
+        return;
+      }
+
+      character -= 1;
+      setTypedPhrase(phrase.slice(0, Math.max(0, character)));
+      if (character <= 0) {
+        deleting = false;
+        currentPhrase = (currentPhrase + 1) % heroPhrases.length;
+        setPhraseIndex(currentPhrase);
+        timer = window.setTimeout(typeNextCharacter, 260);
+      } else {
+        timer = window.setTimeout(typeNextCharacter, 34);
+      }
+    };
+
+    timer = window.setTimeout(typeNextCharacter, 260);
+    return () => { active = false; window.clearTimeout(timer); };
   }, []);
 
   useEffect(() => {
@@ -47,7 +92,7 @@ export default function SitePage() {
     <main>
       <section className="hero" id="header">
         <header className="hero-header"><Image src="/logos/logo.webp" alt="Сочи Парк" width={300} height={100} priority /></header>
-        <div className="hero-inner"><h1>Смотрите подборки<br />квартир у моря</h1><p className="hero-rotator" aria-live="polite">{heroPhrases[phraseIndex]}<span>|</span></p><div className="hero-finance"><div><span>ИПОТЕКА ОТ</span><strong>20 000 ₽/мес.</strong></div><div><span>ПЕРВЫЙ ВЗНОС ОТ</span><strong>0 ₽</strong></div></div><div className="purpose-card" aria-label="Выберите цель покупки"><div className="purpose-grid"><button type="button" onClick={() => openQuiz('Жить на море')}>Жить</button><button type="button" onClick={() => openQuiz('Отдыхать')}>Отдыхать</button><button type="button" onClick={() => openQuiz('Перепродать')}>Перепродать</button><button type="button" onClick={() => openQuiz('Сдавать в аренду')}>Сдавать</button></div><p><img src="/icons/clock.svg" alt="" /><strong>1 минута</strong></p></div><div className="trust-row" aria-label="Рейтинги и партнёры"><span><Image src="/logos/logo-yandex.webp" alt="Яндекс" width={56} height={56} />4,9</span><span><Image src="/logos/logo-2gis.webp" alt="2ГИС" width={56} height={56} />4,7</span><span>Платиновый<br />партнёр</span><Image src="/logos/logo-sber.webp" alt="Сбер" width={56} height={56} /><Image src="/logos/logo-alfa.webp" alt="Альфа-Банк" width={56} height={56} /><Image src="/logos/logo-sovcom.webp" alt="Совкомбанк" width={56} height={56} /></div></div>
+        <div className="hero-inner"><h1>Смотрите подборки<br />квартир у моря</h1><p className="hero-rotator" aria-label={heroPhrases[phraseIndex]}><span className="hero-typed" aria-hidden="true">{typedPhrase}</span><span className="hero-cursor" aria-hidden="true">|</span></p><div className="hero-finance"><div><span>ИПОТЕКА ОТ</span><strong>20 000 ₽/мес.</strong></div><div><span>ПЕРВЫЙ ВЗНОС ОТ</span><strong>0 ₽</strong></div></div><div className="purpose-card" aria-label="Выберите цель покупки"><div className="purpose-grid"><button type="button" onClick={() => openQuiz('Жить на море')}>Жить</button><button type="button" onClick={() => openQuiz('Отдыхать')}>Отдыхать</button><button type="button" onClick={() => openQuiz('Перепродать')}>Перепродать</button><button type="button" onClick={() => openQuiz('Сдавать в аренду')}>Сдавать</button></div><p><img src="/icons/clock.svg" alt="" /><strong>1 минута</strong></p></div><div className="trust-row" aria-label="Рейтинги и партнёры"><span><Image src="/logos/logo-yandex.webp" alt="Яндекс" width={56} height={56} />4,9</span><span><Image src="/logos/logo-2gis.webp" alt="2ГИС" width={56} height={56} />4,7</span><span>Платиновый<br />партнёр</span><Image src="/logos/logo-sber.webp" alt="Сбер" width={56} height={56} /><Image src="/logos/logo-alfa.webp" alt="Альфа-Банк" width={56} height={56} /><Image src="/logos/logo-sovcom.webp" alt="Совкомбанк" width={56} height={56} /></div></div>
       </section>
 
       <section className="prices-section" id="pricesAndAssortment"><div className="content"><h2>Цены и ассортимент</h2><div className="apartment-grid"><ApartmentCard image="/images/flat-studio.webp" alt="Студия 16-24 м² в ЖК Сочи Парк" promo="Ипотека от 0,8% | Рассрочка от 0%" title="Студии 16-24 м²" onOpen={() => openQuiz()} /><ApartmentCard image="/images/flat-one-room.webp" alt="Однокомнатная квартира 37-45 м² в ЖК Сочи Парк" promo="Рассрочка от 0% до 3 лет" title="1-ком. 37-45 м²" onOpen={() => openQuiz()} /><ApartmentCard image="/images/flat-two-room.webp" alt="Двухкомнатная квартира 64 м² в ЖК Сочи Парк" promo="Рассрочка от 0% до 3 лет" title="2-ком. 64 м²" onOpen={() => openQuiz()} /></div></div></section>

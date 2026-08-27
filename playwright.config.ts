@@ -8,9 +8,26 @@ export default defineConfig({
   reporter: 'line',
   use: {
     baseURL: 'http://localhost:4173',
-    channel: 'chrome',
     trace: 'retain-on-failure',
   },
+  projects: [
+    {
+      name: 'chrome',
+      testIgnore: /mobile-webkit\.spec\.ts/,
+      use: { channel: 'chrome' },
+    },
+    {
+      name: 'mobile-webkit',
+      testMatch: /mobile-webkit\.spec\.ts/,
+      use: {
+        browserName: 'webkit',
+        viewport: { width: 440, height: 956 },
+        deviceScaleFactor: 3,
+        hasTouch: true,
+        isMobile: true,
+      },
+    },
+  ],
   webServer: {
     command: 'npm run dev -- --port 4173',
     url: 'http://localhost:4173',
