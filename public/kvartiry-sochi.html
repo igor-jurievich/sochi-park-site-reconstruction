@@ -39,15 +39,14 @@
     "@graph": [
       {
         "@type": "RealEstateAgent",
-        "name": "ООО «Элитный Сочи»",
+        "name": "Агентство недвижимости «Объединённый отдел продаж»",
         "url": "",
-        "telephone": "+78001001774",
+        "telephone": "+79649460713",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Ясногорская, 16/8",
+          "streetAddress": "Несебрская улица, 6Б, микрорайон Центральный",
           "addressLocality": "Сочи",
           "addressRegion": "Краснодарский край",
-          "postalCode": "354000",
           "addressCountry": "RU"
         },
         "description": "Продажа квартир в ЖК Сочи Парк от застройщика Еврострой. Студии, 1- и 2-комнатные квартиры с ремонтом и без."
@@ -84,7 +83,7 @@
             "name": "Где расположен ЖК Сочи Парк?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "ЖК Сочи Парк расположен в Сочи, по адресу ул. Ясногорская, 16/8. До моря — 10 минут. Рядом развитая инфраструктура: магазины, школы, детские сады."
+              "text": "ЖК Сочи Парк расположен в Сочи. До моря — 10 минут. Рядом развитая инфраструктура: магазины, школы, детские сады."
             }
           },
           {
@@ -108,7 +107,7 @@
             "name": "Как связаться с отделом продаж?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Позвоните по бесплатному номеру 8 (800) 100-17-74 или оставьте заявку на сайте. Менеджер свяжется с вами в течение 15 минут."
+              "text": "Позвоните по номеру +7 964 946-07-13 или оставьте заявку на сайте. Менеджер свяжется с вами в течение 15 минут."
             }
           }
         ]
@@ -144,7 +143,7 @@
       <div class="header-inner">
         <div class="container">
           <div id="logo">
-            <a href="/"><img src="assets2/images/logo.webp" alt="ЖК Сочи Парк — официальный сайт застройщика Еврострой" width="160" height="50"></a>
+            <a href="/"><img src="/logos/united-sales-logo.png" alt="Объединённый отдел продаж" width="360" height="74" style="width:min(360px,70vw);height:auto;"></a>
           </div>
 
           <div id="mainMenu-trigger">
@@ -669,21 +668,26 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-6">
-            <h3 class="text-uppercase m-b-30">Адрес и карта</h3>
+            <h3 class="text-uppercase m-b-30">Адрес и контакты</h3>
             <div class="row">
               <div class="col-lg-6 p-b-10">
                 <address>
-                  <strong>г. Сочи, Ясногорская, 16/8</strong><br>
-                  Пн-Пт: с 9:00 до 18:00<br>
-                  Сб: с 10:00 до 17:00<br>
-                  Вс: с 10:00 до 16:00<br>
-                  <a href="tel:+78001001774" class="link">Телефон: +7 (800) 100-1774</a>
+                  <strong>Агентство недвижимости «Объединённый отдел продаж»</strong><br>
+                  Краснодарский край, Сочи,<br>
+                  микрорайон Центральный,<br>
+                  Несебрская улица, 6Б<br>
+                  <a href="tel:+79649460713" class="link">Телефон: +7 964 946-07-13</a>
                 </address>
               </div>
             </div>
           </div>
           <div class="col-lg-6 maps">
-            <img src="assets2/images/img/map.webp" alt="Расположение ЖК Сочи Парк на карте Сочи" loading="lazy" width="600" height="400">
+            <div class="agency-contact-card" aria-label="Контакты агентства недвижимости Объединённый отдел продаж">
+              <span aria-hidden="true">✓</span>
+              <strong>Объединённый отдел продаж</strong>
+              <p>Краснодарский край, Сочи,<br>микрорайон Центральный,<br>Несебрская улица, 6Б</p>
+              <a href="tel:+79649460713">+7 964 946-07-13</a>
+            </div>
           </div>
         </div>
       </div>
@@ -695,6 +699,12 @@
       #about-complex ul { color: #fff; }
       #faq p { color: #fff !important; }
       #faq h3 { color: #fff !important; }
+      .agency-contact-card { position:relative;display:flex;min-height:314px;flex-direction:column;justify-content:center;overflow:hidden;padding:38px 38px 38px 140px;border-radius:18px;color:#fff;background:radial-gradient(circle at 18% 48%,rgba(232,15,82,.18),transparent 32%),linear-gradient(135deg,#111624,#252b3c);box-shadow:0 18px 46px rgba(16,22,36,.2); }
+      .agency-contact-card>span { position:absolute;left:38px;top:50%;transform:translateY(-52%);color:#e80f52;font-size:88px;font-weight:800;line-height:1; }
+      .agency-contact-card strong { color:#fff;font-size:26px;line-height:1.08;text-transform:uppercase; }
+      .agency-contact-card p { margin:15px 0 8px;color:rgba(255,255,255,.78);line-height:1.5; }
+      .agency-contact-card a { color:#fff;font-size:18px;font-weight:700; }
+      @media (max-width: 575px) { .agency-contact-card { min-height:250px;padding:30px 22px 30px 104px; }.agency-contact-card>span { left:22px;font-size:68px; }.agency-contact-card strong { font-size:21px; } }
     </style>
 
     <!-- SEO: О ЖК Сочи Парк -->
@@ -702,7 +712,7 @@
       <div class="container">
         <h2 style="color:#fff;font-size:28px;font-weight:700;margin-bottom:30px;text-align:center;">ЖК Сочи Парк — официальный сайт застройщика Еврострой</h2>
         <div style="color:#fff;font-size:16px;line-height:1.8;max-width:900px;margin:0 auto;">
-          <p>Добро пожаловать на официальный сайт ЖК Сочи Парк от застройщика <strong style="color:#fff;">Еврострой</strong>. Это современный жилой комплекс в городе Сочи, расположенный по адресу ул. Ясногорская, 16/8 — в одном из самых перспективных районов курорта.</p>
+          <p>Добро пожаловать на официальный сайт ЖК Сочи Парк от застройщика <strong style="color:#fff;">Еврострой</strong>. Это современный жилой комплекс в городе Сочи — в одном из самых перспективных районов курорта.</p>
           <p>До побережья Чёрного моря — всего 10 минут. Рядом вся необходимая инфраструктура: магазины, школы, детские сады, медицинские учреждения и спортивные объекты.</p>
           <p>В жилом комплексе представлены квартиры различных планировок:</p>
           <ul style="color:#fff;margin-bottom:16px;">
@@ -736,7 +746,7 @@
           </div>
           <div style="border-bottom:1px solid rgba(255,255,255,0.15);padding:20px 0;">
             <h3 style="color:#fff;font-size:18px;font-weight:600;margin-bottom:10px;">Где расположен ЖК Сочи Парк?</h3>
-            <p style="color:#fff;font-size:15px;line-height:1.7;margin:0;">ЖК Сочи Парк расположен в Сочи, по адресу ул. Ясногорская, 16/8. До моря — 10 минут. Рядом развитая инфраструктура: магазины, школы, детские сады.</p>
+            <p style="color:#fff;font-size:15px;line-height:1.7;margin:0;">ЖК Сочи Парк расположен в Сочи. До моря — 10 минут. Рядом развитая инфраструктура: магазины, школы, детские сады.</p>
           </div>
           <div style="border-bottom:1px solid rgba(255,255,255,0.15);padding:20px 0;">
             <h3 style="color:#fff;font-size:18px;font-weight:600;margin-bottom:10px;">Есть ли ремонт от застройщика?</h3>
@@ -748,7 +758,7 @@
           </div>
           <div style="padding:20px 0;">
             <h3 style="color:#fff;font-size:18px;font-weight:600;margin-bottom:10px;">Как связаться с отделом продаж?</h3>
-            <p style="color:#fff;font-size:15px;line-height:1.7;margin:0;">Позвоните по бесплатному номеру 8 (800) 100-17-74 или оставьте заявку на сайте. Менеджер свяжется с вами в течение 15 минут.</p>
+            <p style="color:#fff;font-size:15px;line-height:1.7;margin:0;">Позвоните по номеру +7 964 946-07-13 или оставьте заявку на сайте. Менеджер свяжется с вами в течение 15 минут.</p>
           </div>
         </div>
       </div>
@@ -760,7 +770,7 @@
         <div class="container">
           <div class="row gap-y">
             <div class="col-md-6 col-xl-6">
-              <p><a href="/"><img src="assets2/images/logo.webp" alt="ЖК Сочи Парк — официальный сайт застройщика Еврострой" loading="lazy" width="230" height="77"></a></p>
+              <p><a href="/"><img src="/logos/united-sales-logo.png" alt="Объединённый отдел продаж" loading="lazy" width="360" height="74" style="width:min(360px,100%);height:auto;"></a></p>
               <p>Любая информация, представленная на данном сайте, носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями статьи 437 ГК РФ.</p>
             </div>
             <div class="col-6 col-md-3 col-xl-2">
@@ -787,10 +797,15 @@
       </div>
       <div class="container">
         <div class="footer-legal">
-          <p>© 2025 ООО «Элитный Сочи»</p>
-          <p>ИНН 2320219067 | ОГРН 1142366002899</p>
-          <p>354000, Краснодарский край, г. Сочи, ул. Пластунская, д. 70</p>
-<p>E-mail по вопросам обработки персональных данных: <a href="mailto:privacy@sochipark-info.ru">privacy@sochipark-info.ru</a></p>          <p><a href="/privacy.html" target="_blank" rel="noopener noreferrer">Политика обработки ПДн</a> | <a href="/policy.html" target="_blank" rel="noopener noreferrer">Политика конфиденциальности</a></p>
+          <p>© 2026 Агентство недвижимости «Объединённый отдел продаж»</p>
+          <p>ИП Наринянц Левон Аркадьевич</p>
+          <p>ИНН 615493473476 | ОГРНИП 326619600150286</p>
+          <p>Краснодарский край, Сочи, микрорайон Центральный, Несебрская улица, 6Б</p>
+          <p>Телефон: <a href="tel:+79649460713">+7 964 946-07-13</a></p>
+          <p>р/с 40802810526070010915 · Филиал «Ростовский» АО «Альфа-Банк»</p>
+          <p>БИК 046015207 · к/с 30101810500000000207</p>
+          <p>E-mail по вопросам обработки персональных данных: <a href="mailto:Narlevon2016@gmail.com">Narlevon2016@gmail.com</a></p>
+          <p><a href="/privacy.html" target="_blank" rel="noopener noreferrer">Политика обработки ПДн</a> | <a href="/policy.html" target="_blank" rel="noopener noreferrer">Политика конфиденциальности</a></p>
         </div>
       </div>
     </footer>
@@ -992,7 +1007,7 @@
 <div class="qz-chk"><span class="qz-chk-icon">✓</span>Без обязательств</div>
 </div>
 <div class="qz-consent">
-<label><input type="checkbox" id="privacyConsent" autocomplete="off">Я&nbsp;даю согласие на&nbsp;обработку <a href="/policy.html" target="_blank" rel="noopener noreferrer">моих персональных данных</a> ООО&nbsp;«Элитный&nbsp;Сочи» в&nbsp;соответствии с&nbsp;<a href="/privacy.html" target="_blank" rel="noopener noreferrer">политикой&nbsp;конфиденциальности</a></label>
+<label><input type="checkbox" id="privacyConsent" autocomplete="off">Я&nbsp;даю согласие на&nbsp;обработку <a href="/policy.html" target="_blank" rel="noopener noreferrer">моих персональных данных</a> ИП&nbsp;Наринянц&nbsp;Левон&nbsp;Аркадьевич (агентство недвижимости «Объединённый отдел продаж») в&nbsp;соответствии с&nbsp;<a href="/privacy.html" target="_blank" rel="noopener noreferrer">политикой&nbsp;конфиденциальности</a></label>
 </div>
 </div>
 <div class="qz-review">
