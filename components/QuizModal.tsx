@@ -14,6 +14,8 @@ const backMap: Partial<Record<Stage, Stage>> = { rooms: 'purpose', finish: 'room
 const giftPrizes = ['💸 Кешбэк 100 000 ₽*', '🇹🇷 Турция — отель 5★, неделя*', '🏦 Бесплатное одобрение ипотеки'];
 const giftReelItems = Array.from({ length: 36 }, (_, index) => giftPrizes[index % giftPrizes.length]);
 const giftReelStopStep = 30;
+const bridgePhaseDelaysMs = [900, 2600, 4700, 6800];
+const messengerStageDelayMs = 9300;
 
 export function QuizModal({ open, initialPurpose, successPath, onClose }: { open: boolean; initialPurpose?: string; successPath: string; onClose: () => void }) {
   const [stage, setStage] = useState<Stage>('purpose');
@@ -103,10 +105,12 @@ export function QuizModal({ open, initialPurpose, successPath, onClose }: { open
     setAptCount(count);
     setBridgePhase(0);
     setStage('bridge');
-    [900, 2600, 4700, 6800].forEach((delay, index) => {
+    bridgePhaseDelaysMs.forEach((delay, index) => {
       timers.current.push(window.setTimeout(() => setBridgePhase(index + 1), delay));
     });
-    timers.current.push(window.setTimeout(() => setStage('messenger'), 8500));
+    // Keep the completed selection visible for 2.5 seconds before asking
+    // where to send it, giving mobile visitors time to read the result.
+    timers.current.push(window.setTimeout(() => setStage('messenger'), messengerStageDelayMs));
   };
 
   const chooseMessenger = (value: string) => {

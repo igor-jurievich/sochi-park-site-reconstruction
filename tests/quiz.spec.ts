@@ -25,7 +25,10 @@ test('main path reaches local success with validation', async ({ page }) => {
   await page.getByRole('button', { name: 'Без первого взноса', exact: true }).click();
   await page.clock.fastForward(500);
   await expect(page.getByRole('heading', { name: 'Анализируем запрос' })).toBeVisible();
-  await page.clock.fastForward(9_000);
+  await page.clock.fastForward(8_500);
+  await expect(page.getByRole('heading', { name: 'Подборка готова!' })).toBeVisible();
+  await expect(page.getByText(/в какой мессенджер прислать/)).not.toBeVisible();
+  await page.clock.fastForward(700);
   await expect(page.getByText(/в какой мессенджер прислать/)).toBeVisible();
   await page.getByRole('button', { name: 'Telegram', exact: true }).click();
   await page.clock.fastForward(500);
@@ -137,14 +140,14 @@ test('every short-page quiz answer advances and Back restores its question', asy
     await quiz.getByRole('button', { name: option, exact: true }).click();
     await page.clock.fastForward(500);
     await expect(quiz.getByRole('heading', { name: 'Анализируем запрос' })).toBeVisible();
-    await page.clock.fastForward(9_000);
+    await page.clock.fastForward(9_400);
     await expect(page.getByText(/в какой мессенджер прислать/)).toBeVisible();
     await quiz.getByRole('button', { name: 'Назад' }).click();
     await expect(page.getByText('Какую акцию включить в Вашу подборку?')).toBeVisible();
   }
   await quiz.getByRole('button', { name: promoOptions[0], exact: true }).click();
   await page.clock.fastForward(500);
-  await page.clock.fastForward(9_000);
+  await page.clock.fastForward(9_400);
 
   for (const option of ['WhatsApp', 'Telegram', 'Max']) {
     await quiz.getByRole('button', { name: option, exact: true }).click();
