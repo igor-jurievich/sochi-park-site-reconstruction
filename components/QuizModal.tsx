@@ -6,13 +6,13 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { messengerOptions, quizQuestions, type QuizQuestionKey } from '@/data/quiz';
 import { submitLead } from '@/lib/submitLead';
 
-type Stage = QuizQuestionKey | 'gift' | 'giftWin' | 'bridge' | 'messenger' | 'contact' | 'success';
+type Stage = QuizQuestionKey | 'gift' | 'giftWin' | 'bridge' | 'messenger' | 'contact';
 type Answers = Partial<Record<QuizQuestionKey, string>> & { messenger?: string };
 
 const progress: Partial<Record<Stage, number>> = { rooms: 1, finish: 2, promo: 3, messenger: 4, contact: 5 };
 const backMap: Partial<Record<Stage, Stage>> = { rooms: 'purpose', finish: 'rooms', promo: 'finish', messenger: 'promo', contact: 'messenger' };
 
-export function QuizModal({ open, initialPurpose, onClose }: { open: boolean; initialPurpose?: string; onClose: () => void }) {
+export function QuizModal({ open, initialPurpose, successPath, onClose }: { open: boolean; initialPurpose?: string; successPath: string; onClose: () => void }) {
   const [stage, setStage] = useState<Stage>('purpose');
   const [answers, setAnswers] = useState<Answers>({});
   const [giftSpinning, setGiftSpinning] = useState(false);
@@ -26,6 +26,7 @@ export function QuizModal({ open, initialPurpose, onClose }: { open: boolean; in
   const [errors, setErrors] = useState<{ phone?: string; consent?: string }>({});
   const [submitting, setSubmitting] = useState(false);
   const timers = useRef<number[]>([]);
+  const appliedInitialPurpose = useRef(false);
 
   const clearTimers = () => { timers.current.forEach(window.clearTimeout); timers.current = []; };
 
@@ -45,9 +46,13 @@ export function QuizModal({ open, initialPurpose, onClose }: { open: boolean; in
   }, [open, onClose]);
 
   useEffect(() => {
-    if (!open || !initialPurpose || stage !== 'purpose') return;
+    if (!open) {
+      appliedInitialPurpose.current = false;
+      return;
+    }
+    if (!initialPurpose || stage !== 'purpose' || appliedInitialPurpose.current) return;
     // A hero choice is a command to skip the already-answered first step.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    appliedInitialPurpose.current = true;
     setAnswers((current) => ({ ...current, purpose: initialPurpose }));
     setStage('rooms');
   }, [initialPurpose, open, stage]);
@@ -121,8 +126,7 @@ export function QuizModal({ open, initialPurpose, onClose }: { open: boolean; in
       purpose: answers.purpose || '', rooms: answers.rooms || '', finish: answers.finish || '', promo: answers.promo || '',
       messenger: answers.messenger || '', countryCode, phone: phoneDigits, name: name.trim() || undefined,
     });
-    setSubmitting(false);
-    setStage('success');
+    window.location.assign(successPath);
   };
 
   if (!open) return null;
@@ -191,7 +195,6 @@ export function QuizModal({ open, initialPurpose, onClose }: { open: boolean; in
           </div>
         ) : null}
 
-        {stage === 'success' ? <div className="success-stage"><div>✓</div><h2>Спасибо!</h2><p>Подборка подготовлена. Это локальная восстановленная версия: заявка не отправлялась во внешнюю CRM.</p><button className="blue-button" type="button" onClick={onClose}>Закрыть</button></div> : null}
       </div>
     </div>
   );

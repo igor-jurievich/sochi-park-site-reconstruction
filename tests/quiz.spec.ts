@@ -37,8 +37,9 @@ test('main path reaches local success with validation', async ({ page }) => {
   await page.locator('.consent input').check();
   await page.getByPlaceholder('Как вас зовут?').fill('Тест');
   await page.getByRole('button', { name: 'Смотреть мою подборку', exact: true }).click();
-  await page.clock.fastForward(700);
-  await expect(page.getByRole('heading', { name: 'Спасибо!' })).toBeVisible();
+  await page.clock.fastForward(3600);
+  await expect(page).toHaveURL(/\/spasibo\.html\?region=eu$/);
+  await expect(page.getByRole('heading', { name: /Уже готовим вашу подборку/ })).toBeVisible();
 });
 
 test('alternate first answer and Back restore the previous question', async ({ page }) => {
@@ -66,4 +67,67 @@ test('mobile modal has no horizontal overflow', async ({ page }) => {
   await expect(page.getByText('Выберите количество комнат в Вашей подборке')).toBeVisible();
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
   expect(overflow).toBe(false);
+});
+
+test('every short-page quiz answer advances and Back restores its question', async ({ page }) => {
+  await page.clock.install();
+  await markGiftWon(page);
+  await gotoReady(page);
+  await page.locator('.apartment-card .section-cta').first().click();
+  const quiz = page.getByLabel('Подбор квартир');
+
+  const purposeOptions = ['Для жизни', 'Для отдыха', 'Перепродать', 'Сдавать'];
+  for (const option of purposeOptions) {
+    await quiz.getByRole('button', { name: option, exact: true }).click();
+    await page.clock.fastForward(350);
+    await expect(page.getByText('Выберите количество комнат в Вашей подборке')).toBeVisible();
+    await quiz.getByRole('button', { name: 'Назад' }).click();
+    await expect(page.getByText('Смотрите подходящую подборку квартир у моря')).toBeVisible();
+  }
+  await quiz.getByRole('button', { name: purposeOptions[0], exact: true }).click();
+  await page.clock.fastForward(350);
+
+  const roomOptions = ['Студия', '1-комнатная', '2-комнатная', 'Посмотрю все варианты'];
+  for (const option of roomOptions) {
+    await quiz.getByRole('button', { name: option, exact: true }).click();
+    await page.clock.fastForward(350);
+    await expect(page.getByText('Выберите тип отделки в Вашей подборке')).toBeVisible();
+    await quiz.getByRole('button', { name: 'Назад' }).click();
+    await expect(page.getByText('Выберите количество комнат в Вашей подборке')).toBeVisible();
+  }
+  await quiz.getByRole('button', { name: roomOptions[0], exact: true }).click();
+  await page.clock.fastForward(350);
+
+  const finishOptions = ['Ремонт', 'Чистовая', 'Черновая', 'Посмотрю все варианты'];
+  for (const option of finishOptions) {
+    await quiz.getByRole('button', { name: option, exact: true }).click();
+    await page.clock.fastForward(350);
+    await expect(page.getByText('Какую акцию включить в Вашу подборку?')).toBeVisible();
+    await quiz.getByRole('button', { name: 'Назад' }).click();
+    await expect(page.getByText('Выберите тип отделки в Вашей подборке')).toBeVisible();
+  }
+  await quiz.getByRole('button', { name: finishOptions[0], exact: true }).click();
+  await page.clock.fastForward(350);
+
+  const promoOptions = ['Платёж от 20 000 ₽ в месяц', 'Без первого взноса', 'Скидка до 20% за наличный расчёт', 'Посмотрю все варианты'];
+  for (const option of promoOptions) {
+    await quiz.getByRole('button', { name: option, exact: true }).click();
+    await page.clock.fastForward(500);
+    await expect(quiz.getByRole('heading', { name: 'Анализируем запрос' })).toBeVisible();
+    await page.clock.fastForward(9_000);
+    await expect(page.getByText(/в какой мессенджер прислать/)).toBeVisible();
+    await quiz.getByRole('button', { name: 'Назад' }).click();
+    await expect(page.getByText('Какую акцию включить в Вашу подборку?')).toBeVisible();
+  }
+  await quiz.getByRole('button', { name: promoOptions[0], exact: true }).click();
+  await page.clock.fastForward(500);
+  await page.clock.fastForward(9_000);
+
+  for (const option of ['WhatsApp', 'Telegram', 'Max']) {
+    await quiz.getByRole('button', { name: option, exact: true }).click();
+    await page.clock.fastForward(500);
+    await expect(page.getByText(new RegExp(`на какой номер ${option}`))).toBeVisible();
+    await quiz.getByRole('button', { name: 'Назад' }).click();
+    await expect(page.getByText(/в какой мессенджер прислать/)).toBeVisible();
+  }
 });

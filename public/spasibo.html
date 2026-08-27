@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Спасибо за обращение">
+<link rel="icon" type="image/x-icon" href="/icon.ico">
+<title>ЖК Сочи Парк - спасибо за обращение</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,"Roboto","Helvetica Neue",Arial,sans-serif;color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000 url('/Sochi/images/sochi-park-foto-na-sajt/foto-na-bekgraund-dlja-video-1500h1000/DSC_9716.webp') center/cover no-repeat}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:0}
+.content{position:relative;z-index:1;text-align:center;padding:40px 24px;max-width:800px;width:100%}
+.badge{display:inline-block;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.7);margin-bottom:20px}
+h1{font-size:32px;font-weight:600;line-height:1.4;margin-bottom:0;letter-spacing:-.3px}
+.legal{width:100%;max-width:720px;padding:2rem 2.5rem;border-radius:22px;background:rgba(15,31,74,.35);border:1px solid rgba(80,132,255,.25);box-shadow:0 24px 50px rgba(7,20,61,.35);color:#fff;text-align:center;margin-top:60px}
+.legal p{margin-bottom:.6rem;font-size:1rem;line-height:1.55}
+.legal p:last-child{margin-bottom:0}
+.legal a{color:#fff;text-decoration:underline;text-decoration-color:rgba(255,255,255,.6)}
+.legal a:hover{color:#a1c6ff}
+@media(max-width:768px){
+h1{font-size:24px}
+.legal{padding:1.5rem 1.25rem;border-radius:18px;margin-top:40px}
+.legal p{font-size:.9rem}
+}
+</style>
+<script>
+  function getCookie(name) {
+    var match = document.cookie.match(
+      new RegExp('(?:^|; )' + name.replace(/[.$?*|{}()[\]\\/+^]/g, '\\$&') + '=([^;]*)')
+    );
+    return match ? decodeURIComponent(match[1]) : '';
+  }
+  
+  function randomHex32() {
+    var bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    var out = '';
+    for (var i = 0; i < bytes.length; i++) {
+      out += bytes[i].toString(16).padStart(2, '0');
+    }
+    return out;
+  }
+  
+  function getForeverVisitorId() {
+    var key = 'thankyou_vid';
+    var value = '';
+  
+    try {
+      value = localStorage.getItem(key) || '';
+    } catch (e) {}
+  
+    if (!/^[a-f0-9]{32}$/.test(value)) {
+      value = getCookie(key);
+    }
+  
+    if (!/^[a-f0-9]{32}$/.test(value)) {
+      value = randomHex32();
+    }
+  
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {}
+  
+    var cookie = key + '=' + encodeURIComponent(value)
+      + '; path=/'
+      + '; max-age=' + (60 * 60 * 24 * 365 * 10)
+      + '; samesite=lax';
+  
+    if (location.protocol === 'https:') {
+      cookie += '; secure';
+    }
+  
+    document.cookie = cookie;
+    return value;
+  }
+  
+  (function () {
+    var payload = {
+      page: location.pathname.split('/').pop(),
+      referrer: document.referrer || '',
+      visitor_id: getForeverVisitorId()
+    };
+  
+    var body = JSON.stringify(payload);
+  
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(
+        '/thankyou-track.php',
+        new Blob([body], { type: 'application/json' })
+      );
+    } else {
+      fetch('/thankyou-track.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: body,
+        keepalive: true,
+        credentials: 'same-origin'
+      }).catch(function(){});
+    }
+  })();
+  </script></head>
+
+<body>
+<div class="overlay"></div>
+<div class="content">
+<div class="badge">Спасибо!</div>
+<h1>Уже готовим вашу подборку. Свяжемся с&nbsp;вами до&nbsp;15&nbsp;минут в&nbsp;рабочее время по&nbsp;МСК</h1>
+<div class="legal" style="margin-top:80vh">
+<p>© 2025 ООО «Элитный Сочи»</p>
+<p>ИНН 2320219067 | ОГРН 1142366002899</p>
+<p>354000, Краснодарский край, г. Сочи, ул. Пластунская, д. 70</p>
+<p>E-mail по вопросам обработки персональных данных: <a href="mailto:privacy@sochipark-info.ru">privacy@sochipark-info.ru</a></p>
+<p><a href="/privacy.html" target="_blank" rel="noopener noreferrer">Политика обработки ПДн</a> | <a href="/policy.html" target="_blank" rel="noopener noreferrer">Политика конфиденциальности</a></p>
+</div>
+</div>
+<!-- <script>
+(function(){
+  var p = new URLSearchParams(window.location.search);
+  var next = p.get('next');
+  if(next && /^spasibo_\w+\.html$/.test(next)){
+    setTimeout(function(){ window.location.href = '/' + next; }, 3000);
+  }
+})();
+</script> -->
+<!-- Yandex.Metrika counter -->
+
+
+
+
+</body><div id="codex-browser-sidebar-comments-root" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483647;"></div></html>

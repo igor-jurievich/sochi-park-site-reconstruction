@@ -10,6 +10,6 @@ export type LeadPayload = {
 };
 
 export async function submitLead(payload: LeadPayload) {
-  await new Promise((resolve) => setTimeout(resolve, 650));
+  await new Promise((resolve) => setTimeout(resolve, 3500));
   return { ok: true, payload, mode: 'local-mock' as const };
 }
