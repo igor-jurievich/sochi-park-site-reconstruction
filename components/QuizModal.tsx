@@ -11,11 +11,15 @@ type Answers = Partial<Record<QuizQuestionKey, string>> & { messenger?: string }
 
 const progress: Partial<Record<Stage, number>> = { rooms: 1, finish: 2, promo: 3, messenger: 4, contact: 5 };
 const backMap: Partial<Record<Stage, Stage>> = { rooms: 'purpose', finish: 'rooms', promo: 'finish', messenger: 'promo', contact: 'messenger' };
+const giftPrizes = ['💸 Кешбэк 100 000 ₽*', '🛋️ Сертификат Hoff 50 000 ₽*', '🏦 Бесплатное одобрение ипотеки'];
+const giftReelItems = Array.from({ length: 36 }, (_, index) => giftPrizes[index % giftPrizes.length]);
+const giftReelStopStep = 30;
 
 export function QuizModal({ open, initialPurpose, successPath, onClose }: { open: boolean; initialPurpose?: string; successPath: string; onClose: () => void }) {
   const [stage, setStage] = useState<Stage>('purpose');
   const [answers, setAnswers] = useState<Answers>({});
   const [giftSpinning, setGiftSpinning] = useState(false);
+  const [giftReelStep, setGiftReelStep] = useState(0);
   const [won, setWon] = useState(() => typeof window !== 'undefined' && sessionStorage.getItem('sochi-gift-won') === '1');
   const [aptCount, setAptCount] = useState(12);
   const [bridgePhase, setBridgePhase] = useState(0);
@@ -82,6 +86,9 @@ export function QuizModal({ open, initialPurpose, successPath, onClose }: { open
   const startGift = () => {
     if (giftSpinning) return;
     setGiftSpinning(true);
+    // Move through ten complete prize cycles and land with Hoff in the
+    // highlighted middle row. The transition is handled by the reel track.
+    setGiftReelStep(giftReelStopStep);
     const winTimer = window.setTimeout(() => {
       sessionStorage.setItem('sochi-gift-won', '1');
       setWon(true);
@@ -162,7 +169,12 @@ export function QuizModal({ open, initialPurpose, successPath, onClose }: { open
         {stage === 'gift' ? (
           <div className="gift-stage">
             <h2>Вы в розыгрыше! Крутите барабан — выиграйте ценный приз</h2>
-            <div className={`gift-reel ${giftSpinning ? 'spinning' : ''}`}><span>💸 Кешбэк 100 000 ₽*</span><strong>🛋️ Сертификат Hoff 50 000 ₽*</strong><span>🏦 Бесплатное одобрение ипотеки</span></div>
+            <div className={`gift-reel ${giftSpinning ? 'spinning' : ''}`} aria-label={giftSpinning ? 'Барабан вращается' : 'Варианты призов'}>
+              <div className="gift-reel-track" data-testid="gift-reel-track" style={{ transform: `translate3d(0, -${giftReelStep * 70}px, 0)` }} aria-hidden="true">
+                {giftReelItems.map((prize, index) => <span key={`${prize}-${index}`} data-prize={prize}>{prize}</span>)}
+              </div>
+              <i className="gift-reel-highlight" aria-hidden="true" />
+            </div>
             <button className="blue-button gift-button" type="button" onClick={startGift} disabled={giftSpinning}>{giftSpinning ? 'Определяем приз…' : 'Крутить барабан'}</button>
             <small>* выдаётся при приобретении квартиры</small>
           </div>

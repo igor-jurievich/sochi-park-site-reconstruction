@@ -69,6 +69,27 @@ test('mobile modal has no horizontal overflow', async ({ page }) => {
   expect(overflow).toBe(false);
 });
 
+test('gift reel moves through prize rows before landing on Hoff', async ({ page }) => {
+  await gotoReady(page);
+  await page.getByRole('button', { name: 'Жить', exact: true }).click();
+  await page.getByRole('button', { name: 'Студия', exact: true }).click();
+  await page.getByRole('button', { name: 'Ремонт', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Крутить барабан' })).toBeVisible();
+
+  const track = page.getByTestId('gift-reel-track');
+  const translateY = () => track.evaluate((element) => new DOMMatrix(getComputedStyle(element).transform).m42);
+  const before = await translateY();
+  await page.getByRole('button', { name: 'Крутить барабан' }).click();
+  await page.waitForTimeout(300);
+  const firstMove = await translateY();
+  await page.waitForTimeout(500);
+  const secondMove = await translateY();
+
+  expect(firstMove).toBeLessThan(before - 1);
+  expect(secondMove).toBeLessThan(firstMove - 1);
+  await expect(page.getByRole('button', { name: 'Определяем приз…' })).toBeDisabled();
+});
+
 test('every short-page quiz answer advances and Back restores its question', async ({ page }) => {
   await page.clock.install();
   await markGiftWon(page);
