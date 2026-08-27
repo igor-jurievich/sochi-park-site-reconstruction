@@ -1287,7 +1287,7 @@
   /* Лайтбокс */
   var overlay = document.createElement('div');
   overlay.className = 'lb-overlay';
-  overlay.innerHTML = '<button class="lb-close">&times;</button><button class="lb-prev">&#8249;</button><img src="" alt=""><button class="lb-next">&#8250;</button>';
+      overlay.innerHTML = '<button class="lb-close">&times;</button><button class="lb-prev">&#8249;</button><img alt=""><button class="lb-next">&#8250;</button>';
   document.body.appendChild(overlay);
   var lbImg = overlay.querySelector('img');
   var lbItems = [];
@@ -1309,7 +1309,7 @@
     document.body.style.overflow='hidden';
   }
 
-  function closeLb(){overlay.classList.remove('active'); lbImg.src=''; document.body.style.overflow='';}
+      function closeLb(){overlay.classList.remove('active'); lbImg.removeAttribute('src'); document.body.style.overflow='';}
 
   if(grid){
     grid.addEventListener('click',function(e){
@@ -1492,6 +1492,6 @@ setTimeout(function() {
 })();
 </script>
 
-  </div><div class="lb-overlay"><button class="lb-close">×</button><button class="lb-prev">‹</button><img src="" alt=""><button class="lb-next">›</button></div>
+  </div><div class="lb-overlay"><button class="lb-close">×</button><button class="lb-prev">‹</button><img alt=""><button class="lb-next">›</button></div>
 
 </body><div id="codex-browser-sidebar-comments-root" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483647;"></div></html>
