@@ -78,6 +78,28 @@ test('submission sends quiz, source block and advertising attribution', async ({
     block: 'Первый экран / Для жизни', consent: true,
     attribution: { utmSource: 'avito', utmMedium: 'cpc', utmCampaign: 'test-campaign', avitoClickId: 'test-click' },
   });
+  expect(captured).not.toHaveProperty('website');
+});
+
+test('all 11 landing-page entry buttons open the quiz', async ({ page }) => {
+  await gotoReady(page);
+  const quiz = page.getByLabel('Подбор квартир');
+
+  for (const label of ['Жить', 'Отдыхать', 'Перепродать', 'Сдавать']) {
+    await page.getByRole('button', { name: label, exact: true }).click();
+    await expect(quiz).toBeVisible();
+    await quiz.getByRole('button', { name: 'Закрыть' }).click();
+    await expect(quiz).toBeHidden();
+  }
+
+  const sectionButtons = page.locator('.section-cta');
+  await expect(sectionButtons).toHaveCount(7);
+  for (let index = 0; index < 7; index += 1) {
+    await sectionButtons.nth(index).click();
+    await expect(quiz).toBeVisible();
+    await quiz.getByRole('button', { name: 'Закрыть' }).click();
+    await expect(quiz).toBeHidden();
+  }
 });
 
 test('alternate first answer and Back restore the previous question', async ({ page }) => {

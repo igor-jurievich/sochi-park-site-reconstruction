@@ -11,7 +11,6 @@ export type LeadPayload = {
   block: string;
   apartmentCount: number;
   consent: boolean;
-  website?: string;
 };
 
 type Attribution = {

@@ -28,7 +28,6 @@ export function QuizModal({ open, initialPurpose, successPath, trigger, onClose 
   const [countryCode, setCountryCode] = useState('+7');
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
-  const [website, setWebsite] = useState('');
   const [consent, setConsent] = useState(true);
   const [errors, setErrors] = useState<{ phone?: string; consent?: string; submit?: string }>({});
   const [submitting, setSubmitting] = useState(false);
@@ -138,7 +137,7 @@ export function QuizModal({ open, initialPurpose, successPath, trigger, onClose 
       await submitLead({
         purpose: answers.purpose || '', rooms: answers.rooms || '', finish: answers.finish || '', promo: answers.promo || '',
         gift: won ? 'Турция — отель 5★ на неделю' : '', messenger: answers.messenger || '', countryCode, phone: phoneDigits,
-        name: name.trim() || undefined, block: trigger, apartmentCount: aptCount, consent, website,
+        name: name.trim() || undefined, block: trigger, apartmentCount: aptCount, consent,
       });
       window.location.assign(successPath);
     } catch (error) {
@@ -213,7 +212,7 @@ export function QuizModal({ open, initialPurpose, successPath, trigger, onClose 
               <div className="phone-meter"><i style={{ width: `${Math.min(100, (phoneDigits.length / digitsRequired) * 100)}%` }} /><span>{phoneValid ? 'Номер введён!' : `Осталось ${Math.max(0, digitsRequired - phoneDigits.length)} цифр`}</span></div>
               {errors.phone ? <p className="field-error">{errors.phone}</p> : null}
               <p className="secure"><img src="/icons/shield.svg" alt="" />Ваши данные надёжно защищены</p>
-              {phoneValid ? <div className="contact-extra"><label>Имя (необязательно)<input type="text" placeholder="Как вас зовут?" value={name} onChange={(event) => setName(event.target.value)} /></label><label className="website-field" aria-hidden="true">Сайт<input type="text" tabIndex={-1} autoComplete="off" value={website} onChange={(event) => setWebsite(event.target.value)} /></label><button className="blue-button" type="button" onClick={handleSubmit} disabled={submitting}>{submitting ? 'Готовим подборку…' : 'Смотреть мою подборку'}</button><p className="benefits">✓ Бесплатно &nbsp;&nbsp; ✓ Без обязательств</p><label className={`consent ${errors.consent ? 'has-error' : ''}`}><input type="checkbox" checked={consent} onChange={(event) => { setConsent(event.target.checked); setErrors((current) => ({ ...current, consent: undefined, submit: undefined })); }} />Я даю согласие на обработку <a href="/privacy.html" target="_blank">моих персональных данных</a> ИП Наринянц Левон Аркадьевич (агентство недвижимости «Объединённый отдел продаж») в соответствии с <a href="/policy.html" target="_blank">политикой конфиденциальности</a></label>{errors.consent ? <div className="toast-error">{errors.consent}</div> : null}{errors.submit ? <div className="toast-error">{errors.submit}</div> : null}</div> : null}
+              {phoneValid ? <div className="contact-extra"><label>Имя (необязательно)<input type="text" placeholder="Как вас зовут?" value={name} onChange={(event) => setName(event.target.value)} /></label><button className="blue-button" type="button" onClick={handleSubmit} disabled={submitting}>{submitting ? 'Готовим подборку…' : 'Смотреть мою подборку'}</button><p className="benefits">✓ Бесплатно &nbsp;&nbsp; ✓ Без обязательств</p><label className={`consent ${errors.consent ? 'has-error' : ''}`}><input type="checkbox" checked={consent} onChange={(event) => { setConsent(event.target.checked); setErrors((current) => ({ ...current, consent: undefined, submit: undefined })); }} />Я даю согласие на обработку <a href="/privacy.html" target="_blank">моих персональных данных</a> ИП Наринянц Левон Аркадьевич (агентство недвижимости «Объединённый отдел продаж») в соответствии с <a href="/policy.html" target="_blank">политикой конфиденциальности</a></label>{errors.consent ? <div className="toast-error">{errors.consent}</div> : null}{errors.submit ? <div className="toast-error">{errors.submit}</div> : null}</div> : null}
             </div>
           </div>
         ) : null}

@@ -27,7 +27,6 @@ type IncomingLead = {
   block?: unknown;
   apartmentCount?: unknown;
   consent?: unknown;
-  website?: unknown;
   isTest?: unknown;
   attribution?: Attribution;
 };
@@ -82,7 +81,6 @@ function normalizeLead(body: IncomingLead) {
     name: cleanText(body.name, 120), block: cleanText(body.block, 200),
     apartmentCount: Number.isFinite(Number(body.apartmentCount)) ? Math.max(0, Math.min(100, Number(body.apartmentCount))) : 0,
     consent: body.consent === true,
-    website: cleanText(body.website, 200),
     isTest: body.isTest === true,
     attribution: {
       utmSource: cleanText(rawAttribution.utmSource, 200), utmMedium: cleanText(rawAttribution.utmMedium, 200),
@@ -168,19 +166,40 @@ async function appendGoogleSheet(row: string[]) {
   return { configured: true, ok: true };
 }
 
+function logLeadEvent(event: string, details: Record<string, unknown> = {}) {
+  console.info(JSON.stringify({ scope: 'lead-delivery', event, ...details }));
+}
+
+function errorMessage(error: unknown, fallback: string) {
+  return error instanceof Error ? error.message : fallback;
+}
+
 export async function POST(request: Request) {
-  if (!sameOrigin(request)) return Response.json({ ok: false, error: 'Недопустимый источник запроса' }, { status: 403 });
+  if (!sameOrigin(request)) {
+    logLeadEvent('request_rejected', { reason: 'origin' });
+    return Response.json({ ok: false, error: 'Недопустимый источник запроса' }, { status: 403 });
+  }
   const contentLength = Number(request.headers.get('content-length') || 0);
-  if (contentLength > 32_000) return Response.json({ ok: false, error: 'Слишком большой запрос' }, { status: 413 });
+  if (contentLength > 32_000) {
+    logLeadEvent('request_rejected', { reason: 'payload_too_large', contentLength });
+    return Response.json({ ok: false, error: 'Слишком большой запрос' }, { status: 413 });
+  }
 
   const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-  if (isRateLimited(ip)) return Response.json({ ok: false, error: 'Слишком много запросов. Попробуйте позже.' }, { status: 429 });
+  if (isRateLimited(ip)) {
+    logLeadEvent('request_rejected', { reason: 'rate_limit' });
+    return Response.json({ ok: false, error: 'Слишком много запросов. Попробуйте позже.' }, { status: 429 });
+  }
 
   let body: IncomingLead;
-  try { body = await request.json() as IncomingLead; } catch { return Response.json({ ok: false, error: 'Некорректный запрос' }, { status: 400 }); }
+  try { body = await request.json() as IncomingLead; } catch {
+    logLeadEvent('request_rejected', { reason: 'invalid_json' });
+    return Response.json({ ok: false, error: 'Некорректный запрос' }, { status: 400 });
+  }
   const data = normalizeLead(body);
-  if (data.website) return Response.json({ ok: true, leadId: data.leadId });
+  logLeadEvent('request_received', { leadId: data.leadId, block: data.block || 'не определён', hasAvitoClickId: Boolean(data.attribution.avitoClickId) });
   if (!data.leadId || !data.consent || !/^\+\d{8,15}$/.test(data.fullPhone)) {
+    logLeadEvent('request_rejected', { leadId: data.leadId, reason: 'validation' });
     return Response.json({ ok: false, error: 'Проверьте номер телефона и согласие на обработку данных' }, { status: 400 });
   }
 
@@ -188,7 +207,13 @@ export async function POST(request: Request) {
   const comment = buildComment(data, createdAt);
   let bitrixLeadId = '';
   let bitrixError = '';
-  try { bitrixLeadId = await createBitrixLead(data, comment); } catch (error) { bitrixError = error instanceof Error ? error.message : 'Неизвестная ошибка Bitrix24'; }
+  try {
+    bitrixLeadId = await createBitrixLead(data, comment);
+    logLeadEvent('bitrix_created', { leadId: data.leadId, bitrixLeadId });
+  } catch (error) {
+    bitrixError = errorMessage(error, 'Неизвестная ошибка Bitrix24');
+    logLeadEvent('bitrix_failed', { leadId: data.leadId, error: bitrixError });
+  }
 
   const device = `${maskIp(ip)} · ${cleanText(request.headers.get('user-agent'), 350)}`;
   const a = data.attribution;
@@ -201,12 +226,18 @@ export async function POST(request: Request) {
   ];
 
   let sheetStored = false;
-  try { sheetStored = (await appendGoogleSheet(row)).ok; } catch (error) { console.error('Google Sheets lead backup failed', error instanceof Error ? error.message : error); }
+  try {
+    sheetStored = (await appendGoogleSheet(row)).ok;
+    logLeadEvent(sheetStored ? 'sheet_stored' : 'sheet_not_configured', { leadId: data.leadId, bitrixLeadId });
+  } catch (error) {
+    logLeadEvent('sheet_failed', { leadId: data.leadId, bitrixLeadId, error: errorMessage(error, 'Неизвестная ошибка Google Sheets') });
+  }
 
   if (!bitrixLeadId) {
-    console.error('Bitrix24 lead creation failed', bitrixError);
+    logLeadEvent('request_failed', { leadId: data.leadId, sheetStored });
     return Response.json({ ok: false, error: 'Не удалось передать заявку менеджеру. Попробуйте ещё раз.', leadId: data.leadId, sheetStored }, { status: 502 });
   }
 
+  logLeadEvent('request_succeeded', { leadId: data.leadId, bitrixLeadId, sheetStored });
   return Response.json({ ok: true, leadId: data.leadId, bitrixLeadId, sheetStored });
 }
