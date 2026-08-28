@@ -9,6 +9,8 @@ const routes = [
   ['/policy.html', /Политика конфиденциальности и Cookie/],
   ['/spasibo.html?region=eu', /Уже готовим вашу подборку/],
   ['/spasibo2.html?region=eu', /Уже готовим вашу подборку/],
+  ['/spasibo?region=eu', /Уже готовим вашу подборку/],
+  ['/spasibo2?region=eu', /Уже готовим вашу подборку/],
 ] as const;
 
 for (const [route, heading] of routes) {
