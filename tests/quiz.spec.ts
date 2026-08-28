@@ -1,5 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+  await page.route('**/api/leads', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true, leadId: 'test-lead', bitrixLeadId: 'test-bitrix' }) });
+  });
+});
+
 async function markGiftWon(page: Page) {
   await page.addInitScript(() => sessionStorage.setItem('sochi-gift-won', '1'));
 }
@@ -43,6 +49,35 @@ test('main path reaches local success with validation', async ({ page }) => {
   await page.clock.fastForward(3600);
   await expect(page).toHaveURL(/\/spasibo\.html\?region=eu$/);
   await expect(page.getByRole('heading', { name: /Уже готовим вашу подборку/ })).toBeVisible();
+});
+
+test('submission sends quiz, source block and advertising attribution', async ({ page }) => {
+  let captured: Record<string, unknown> | undefined;
+  await page.unroute('**/api/leads');
+  await page.route('**/api/leads', async (route) => {
+    captured = route.request().postDataJSON() as Record<string, unknown>;
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true, leadId: 'test-lead' }) });
+  });
+  await page.clock.install();
+  await markGiftWon(page);
+  await page.goto('/?utm_source=avito&utm_medium=cpc&utm_campaign=test-campaign&avito_click_id=test-click');
+  await page.locator('html[data-app-ready="true"]').waitFor();
+  await reachPromo(page);
+  await page.getByRole('button', { name: 'Без первого взноса', exact: true }).click();
+  await page.clock.fastForward(9_700);
+  await page.getByRole('button', { name: 'Telegram', exact: true }).click();
+  await page.clock.fastForward(500);
+  await page.getByLabel('Телефон').fill('9123456789');
+  await page.getByPlaceholder('Как вас зовут?').fill('Тест');
+  await page.getByRole('button', { name: 'Смотреть мою подборку', exact: true }).click();
+
+  await expect.poll(() => captured).toBeTruthy();
+  expect(captured).toMatchObject({
+    purpose: 'Жить на море', rooms: 'Студия', finish: 'Ремонт', promo: 'Без первого взноса',
+    messenger: 'telegram', countryCode: '+7', phone: '9123456789', name: 'Тест',
+    block: 'Первый экран / Для жизни', consent: true,
+    attribution: { utmSource: 'avito', utmMedium: 'cpc', utmCampaign: 'test-campaign', avitoClickId: 'test-click' },
+  });
 });
 
 test('alternate first answer and Back restore the previous question', async ({ page }) => {
