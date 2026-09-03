@@ -1,1 +1,5 @@
-export { default } from '../page';
+import { permanentRedirect } from 'next/navigation';
+
+export default function LegacyGiftPage() {
+  permanentRedirect('/');
+}

@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { messengerOptions, quizQuestions, type QuizQuestionKey } from '@/data/quiz';
 import { submitLead } from '@/lib/submitLead';
 
-type Stage = QuizQuestionKey | 'gift' | 'giftWin' | 'bridge' | 'messenger' | 'contact';
+type Stage = QuizQuestionKey | 'gift' | 'bridge' | 'messenger' | 'contact';
 type Answers = Partial<Record<QuizQuestionKey, string>> & { messenger?: string };
 
 const progress: Partial<Record<Stage, number>> = { rooms: 1, finish: 2, promo: 3, messenger: 4, contact: 5 };
@@ -27,7 +27,6 @@ export function QuizModal({ open, initialPurpose, successPath, trigger, onClose 
   const [bridgePhase, setBridgePhase] = useState(0);
   const [countryCode, setCountryCode] = useState('+7');
   const [phone, setPhone] = useState('');
-  const [name, setName] = useState('');
   const [consent, setConsent] = useState(true);
   const [errors, setErrors] = useState<{ phone?: string; consent?: string; submit?: string }>({});
   const [submitting, setSubmitting] = useState(false);
@@ -88,15 +87,13 @@ export function QuizModal({ open, initialPurpose, successPath, trigger, onClose 
   const startGift = () => {
     if (giftSpinning) return;
     setGiftSpinning(true);
-    // Move through ten complete prize cycles and land on the Turkey trip in the
-    // highlighted middle row. The transition is handled by the reel track.
+    // Keep the wheel outcome for the lead, then move directly to the next
+    // question instead of putting a second, passive screen in the flow.
     setGiftReelStep(giftReelStopStep);
     const winTimer = window.setTimeout(() => {
       sessionStorage.setItem('sochi-gift-won', '1');
       setWon(true);
-      setStage('giftWin');
-      const continueTimer = window.setTimeout(() => setStage('promo'), 5000);
-      timers.current.push(continueTimer);
+      setStage('promo');
     }, 4400);
     timers.current.push(winTimer);
   };
@@ -137,7 +134,7 @@ export function QuizModal({ open, initialPurpose, successPath, trigger, onClose 
       await submitLead({
         purpose: answers.purpose || '', rooms: answers.rooms || '', finish: answers.finish || '', promo: answers.promo || '',
         gift: won ? 'Турция — отель 5★ на неделю' : '', messenger: answers.messenger || '', countryCode, phone: phoneDigits,
-        name: name.trim() || undefined, block: trigger, apartmentCount: aptCount, consent,
+        block: trigger, apartmentCount: aptCount, consent,
       });
       window.location.assign(successPath);
     } catch (error) {
@@ -160,11 +157,9 @@ export function QuizModal({ open, initialPurpose, successPath, trigger, onClose 
           <button type="button" className="quiz-close" onClick={onClose} aria-label="Закрыть">×</button>
         </div>
 
-        {won && !['gift','giftWin','purpose','rooms','finish'].includes(stage) ? <div className="gift-pin">🎁 Подарок: Турция 🇹🇷 — отель 5★ на неделю</div> : null}
-
         {question ? (
           <div className={`quiz-question ${question.key === 'purpose' ? 'purpose-question' : ''}`}>
-            <img className="quiz-image" src={question.image} alt="" />
+            <img className="quiz-image" src={question.image} alt={question.title} />
             <h2>{question.title}</h2>
             <div className={`quiz-options ${question.key === 'purpose' ? 'purpose-options' : ''}`}>
               {question.options.map((option) => (
@@ -190,10 +185,6 @@ export function QuizModal({ open, initialPurpose, successPath, trigger, onClose 
           </div>
         ) : null}
 
-        {stage === 'giftWin' ? (
-          <div className="gift-win"><div className="gift-celebration">🎉</div><h2>Поздравляем!<br />Вы выиграли поездку</h2><div className="travel-certificate"><img className="travel-certificate-bg" src="/images/turkey-gift-certificate-bg.webp" alt="" /><div className="travel-certificate-copy"><img className="travel-certificate-logo" src="/logos/oop-logo-on-dark.svg" alt="Объединённый отдел продаж" /><span>ПОДАРОЧНЫЙ СЕРТИФИКАТ</span><strong>ПОЕЗДКА В<br /><b>ТУРЦИЮ 🇹🇷</b></strong><em>ОТЕЛЬ 5★ · НА НЕДЕЛЮ</em><small>* выдаётся при приобретении квартиры</small></div></div></div>
-        ) : null}
-
         {stage === 'bridge' ? (
           <div className="bridge-stage">
             {bridgePhase < 4 ? <><h2>Анализируем запрос</h2><dl><div><dt>Цель:</dt><dd>{answers.purpose}</dd></div><div><dt>Комнаты:</dt><dd>{answers.rooms}</dd></div><div><dt>Отделка:</dt><dd>{answers.finish}</dd></div><div><dt>Акция:</dt><dd>{answers.promo}</dd></div></dl><div className="bridge-loader"><i style={{ width: `${Math.max(8, bridgePhase * 25)}%` }} /></div><p>{['Ищем квартиры…','Проверяем все варианты','Загружаем цены и планировки','Готовим фото и видео'][bridgePhase]}</p></> : <><h2>Подборка готова!</h2><strong className="apt-count">{aptCount} квартир найдено</strong><p>✓ Включены 5 акционных квартир</p></>}
@@ -212,7 +203,7 @@ export function QuizModal({ open, initialPurpose, successPath, trigger, onClose 
               <div className="phone-meter"><i style={{ width: `${Math.min(100, (phoneDigits.length / digitsRequired) * 100)}%` }} /><span>{phoneValid ? 'Номер введён!' : `Осталось ${Math.max(0, digitsRequired - phoneDigits.length)} цифр`}</span></div>
               {errors.phone ? <p className="field-error">{errors.phone}</p> : null}
               <p className="secure"><img src="/icons/shield.svg" alt="" />Ваши данные надёжно защищены</p>
-              {phoneValid ? <div className="contact-extra"><label>Имя (необязательно)<input type="text" placeholder="Как вас зовут?" value={name} onChange={(event) => setName(event.target.value)} /></label><button className="blue-button" type="button" onClick={handleSubmit} disabled={submitting}>{submitting ? 'Готовим подборку…' : 'Смотреть мою подборку'}</button><p className="benefits">✓ Бесплатно &nbsp;&nbsp; ✓ Без обязательств</p><label className={`consent ${errors.consent ? 'has-error' : ''}`}><input type="checkbox" checked={consent} onChange={(event) => { setConsent(event.target.checked); setErrors((current) => ({ ...current, consent: undefined, submit: undefined })); }} />Я даю согласие на обработку <a href="/privacy.html" target="_blank">моих персональных данных</a> ИП Наринянц Левон Аркадьевич (агентство недвижимости «Объединённый отдел продаж») в соответствии с <a href="/policy.html" target="_blank">политикой конфиденциальности</a></label>{errors.consent ? <div className="toast-error">{errors.consent}</div> : null}{errors.submit ? <div className="toast-error">{errors.submit}</div> : null}</div> : null}
+              {phoneValid ? <div className="contact-extra"><button className="blue-button" type="button" onClick={handleSubmit} disabled={submitting}>{submitting ? 'Готовим подборку…' : 'Смотреть мою подборку'}</button><p className="benefits">✓ Бесплатно &nbsp;&nbsp; ✓ Без обязательств</p><label className={`consent ${errors.consent ? 'has-error' : ''}`}><input type="checkbox" checked={consent} onChange={(event) => { setConsent(event.target.checked); setErrors((current) => ({ ...current, consent: undefined, submit: undefined })); }} />Я даю согласие на обработку <a href="/privacy.html" target="_blank">моих персональных данных</a> ИП Наринянц Левон Аркадьевич (агентство недвижимости «Объединённый отдел продаж») в соответствии с <a href="/policy.html" target="_blank">политикой конфиденциальности</a></label>{errors.consent ? <div className="toast-error">{errors.consent}</div> : null}{errors.submit ? <div className="toast-error">{errors.submit}</div> : null}</div> : null}
             </div>
           </div>
         ) : null}

@@ -49,6 +49,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 }
 
 .content { width:min(1140px,calc(100% - 40px)); margin:0 auto; }
+.complex-section { padding:88px 0 82px; background:#f7f9fb; }
+.complex-section h2,.advantages-section h2 { max-width:760px; margin:0 auto; color:#1e2022; text-align:center; font-size:52px; line-height:1.08; letter-spacing:-1.6px; }
+.complex-section .eyebrow,.advantages-section .eyebrow { text-align:center; color:#4d6be7; font-weight:700; }
+.complex-lead { max-width:720px; margin:22px auto 34px; color:#555b63; text-align:center; font-size:18px; line-height:1.55; }
+.complex-facts { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:0; }
+.complex-facts>div { min-height:134px; padding:24px 20px; border:1px solid #e2e6ea; border-radius:16px; background:#fff; text-align:center; box-shadow:0 10px 24px rgba(20,40,80,.04); }
+.complex-facts dt { color:#7a7f86; font-size:14px; }
+.complex-facts dd { margin:10px 0 0; color:#24272b; font-size:23px; line-height:1.15; font-weight:700; }
 .blue-button { position:relative; overflow:hidden; border:0; border-radius:2px; color:#fff; background:#153bff; font-weight:600; letter-spacing:2px; cursor:pointer; }
 .blue-button::after { content:""; position:absolute; inset:-60% auto -60% -55%; width:28%; transform:rotate(22deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,.62),transparent); animation:button-shine 3.5s ease-in-out infinite; }
 .blue-button:hover { background:#0e31e5; }
@@ -58,6 +66,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 
 .prices-section { min-height:825px; padding:50px 0 40px; background:#fff; }
 .prices-section h2,.payments-section h2 { margin:0 0 28px; text-align:center; color:#1e2022; font-size:60px; line-height:1.1; font-weight:600; letter-spacing:-2px; }
+.section-intro { max-width:690px; margin:-7px auto 32px; color:#64696f; text-align:center; font-size:17px; line-height:1.5; }
 .apartment-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
 .apartment-card { display:flex; min-width:0; flex-direction:column; overflow:hidden; border:1px solid #aeb1b5; background:#fff; }
 .apartment-image { position:relative; height:375px; padding:50px 14px 0; }
@@ -67,8 +76,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .badges span+span { background:#535860; }
 .apartment-copy { display:flex; flex:1; flex-direction:column; padding:0 24px 42px; color:#444; }
 .apartment-copy>p { margin:17px 0 8px; font-size:13px; }
+.apartment-copy .apartment-price { margin:19px 0 8px; color:#153bff; font-size:15px; font-weight:800; }
 .apartment-copy h3 { margin:0 0 2px; font-size:18px; line-height:1.35; }
-.apartment-copy small { display:block; margin-bottom:41px; font-size:12px; }
+.apartment-copy small { display:block; margin:7px 0 14px; color:#61666d; font-size:13px; line-height:1.45; }
+.availability-note { margin:0 0 24px!important; color:#858a90; font-size:12px!important; line-height:1.45; }
 .apartment-copy .section-cta { margin-top:auto; }
 
 .video-section { position:relative; height:400px; color:#fff; text-align:center; background:linear-gradient(rgba(0,0,0,.42),rgba(0,0,0,.42)),url('/backgrounds/hero.webp') center/cover no-repeat; }
@@ -86,6 +97,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .investor-section picture { display:block; width:640px; max-width:100%; margin:0 auto 38px; }
 .investor-section picture img { display:block; width:100%; height:auto; }
 .investor-section .section-cta { width:270px; min-height:62px; }
+
+.advantages-section { padding:84px 0 88px; background:#f7f9fb; }
+.advantages-section h2 { margin-bottom:42px; }
+.advantages-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:30px; }
+.advantage-card { min-width:0; }
+.advantage-card img { display:block; width:100%; aspect-ratio:1.45; border-radius:18px; object-fit:cover; }
+.advantage-card h3 { margin:18px 0 9px; color:#24272b; font-size:22px; line-height:1.2; }
+.advantage-card p { margin:0; color:#737980; font-size:16px; line-height:1.48; }
+.advantages-cta { width:300px; max-width:100%; margin:44px auto 0; }
+.advantages-cta .section-cta { min-height:64px; }
 
 .payments-section { min-height:803px; padding:50px 0 40px; background:#f7f9fb; }
 .payments-section h2 { margin-bottom:28px; }
@@ -141,7 +162,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .quiz-progress strong { display:block; margin:0 0 3px; color:#34c759; font-size:14px; }
 .quiz-progress>span { display:block; height:4px; overflow:hidden; border-radius:4px; background:#e8e8e8; }
 .quiz-progress i { display:block; width:100%; height:100%; transform-origin:left; border-radius:4px; background:linear-gradient(90deg,#34c759,#7ed957); transition:transform .3s ease; }
-.gift-pin { margin:4px 0 16px; padding:12px 18px; border:2px solid #ff9500; border-radius:12px; background:#fffaf1; font-size:16px; font-weight:700; }
 .quiz-question { display:grid; grid-template-columns:minmax(300px,48%) 1fr; grid-template-areas:"image title" "image options"; column-gap:34px; align-items:start; }
 .quiz-image { grid-area:image; display:block; width:100%; height:510px; border-radius:12px; object-fit:cover; }
 .quiz-question h2 { grid-area:title; margin:18px 0 28px; font-size:30px; line-height:1.2; }
@@ -156,7 +176,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .purpose-options { grid-template-columns:1fr 1fr; }
 .purpose-options button { justify-content:center; min-height:86px; font-size:18px; font-weight:600; }
 
-.gift-stage,.gift-win,.bridge-stage,.messenger-stage,.contact-stage,.success-stage { width:min(700px,100%); margin:18px auto 0; text-align:center; }
+.gift-stage,.bridge-stage,.messenger-stage,.contact-stage,.success-stage { width:min(700px,100%); margin:18px auto 0; text-align:center; }
 .gift-stage h2 { margin:30px auto 46px; max-width:680px; font-size:32px; line-height:1.25; }
 .gift-reel { position:relative; width:340px; max-width:100%; height:210px; margin:0 auto 42px; overflow:hidden; border-radius:16px; background:#fff; box-shadow:0 8px 28px rgba(0,0,0,.12); }
 .gift-reel-track { position:absolute; inset:0 auto auto 0; width:100%; will-change:transform; transition:transform 4.2s cubic-bezier(.12,.64,.08,1); }
@@ -168,17 +188,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .gift-reel.spinning .gift-reel-track { filter:blur(.35px); }
 .gift-button { width:300px; min-height:58px; font-size:18px; letter-spacing:0; }
 .gift-stage>small { display:block; margin-top:24px; color:#999; }
-.gift-win { padding-top:4px; color:#1a1a1a; }
-.gift-celebration { font-size:38px; line-height:1; }.gift-win h2 { margin:8px 0 0; font-size:28px; line-height:1.15; }
-.travel-certificate { position:relative; width:640px; max-width:100%; aspect-ratio:3/2; margin:18px auto 0; overflow:hidden; border-radius:22px; background:#132239; box-shadow:0 20px 48px rgba(19,34,57,.3); }
-.travel-certificate-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-.travel-certificate-copy { position:absolute; z-index:1; inset:0 45% 0 0; display:flex; flex-direction:column; align-items:flex-start; padding:22px 24px 18px; color:#fff; text-align:left; }
-.travel-certificate-logo { width:76px; height:auto; margin-bottom:8px; }
-.travel-certificate-copy>span { color:#d8b978; font-size:11px; font-weight:800; letter-spacing:1.7px; }
-.travel-certificate-copy>strong { margin-top:8px; font-size:21px; line-height:1.05; letter-spacing:.4px; }
-.travel-certificate-copy>strong b { display:inline-block; margin-top:3px; color:#42cb29; font-size:34px; }
-.travel-certificate-copy>em { margin-top:11px; padding:7px 10px; border:1px solid rgba(216,185,120,.72); border-radius:999px; color:#fff; font-size:14px; font-style:normal; font-weight:800; }
-.travel-certificate-copy>small { margin-top:auto; color:rgba(255,255,255,.64); font-size:8px; line-height:1.3; }
 .bridge-stage { padding-top:80px; }
 .bridge-stage h2 { margin:0 0 30px; font-size:32px; }
 .bridge-stage dl { width:430px; max-width:100%; margin:0 auto 35px; text-align:left; }
@@ -212,6 +221,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 
 @media (max-width:768px) {
   .content { width:calc(100% - 60px); }
+  .complex-section { padding:58px 0 60px; }
+  .complex-section h2,.advantages-section h2 { font-size:37px; line-height:1.1; letter-spacing:-1px; }
+  .complex-lead { margin:19px auto 25px; font-size:16px; }
+  .complex-facts { grid-template-columns:1fr 1fr; gap:10px; }
+  .complex-facts>div { min-height:115px; padding:19px 12px; }
+  .complex-facts dd { margin-top:8px; font-size:18px; }
   .prices-section { min-height:2053px; padding:50px 0 40px; }
   .prices-section h2,.payments-section h2 { margin-bottom:30px; font-size:40px; line-height:1.05; letter-spacing:-1px; }
   .apartment-grid { display:block; }
@@ -219,6 +234,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
   .apartment-image { height:340px; padding-top:48px; }
   .apartment-copy { padding:0 24px 28px; }
   .apartment-copy small { margin-bottom:38px; }
+  .apartment-copy .apartment-price { margin-top:18px; font-size:15px; }
+  .availability-note { margin-bottom:19px!important; }
+  .section-intro { margin:-10px auto 29px; font-size:15px; }
   .section-cta { min-height:62px; font-size:14px; letter-spacing:0; }
   .video-section { height:400px; background-position:center; }
   .video-section h2 { font-size:31px; line-height:1.1; letter-spacing:1px; }
@@ -229,6 +247,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
   .investor-section h3 { margin-bottom:24px; font-size:25px; }
   .investor-section picture { width:330px; margin-bottom:54px; }
   .investor-section .section-cta { width:270px; }
+  .advantages-section { padding:58px 0 62px; }
+  .advantages-section h2 { margin-bottom:29px; }
+  .advantages-grid { grid-template-columns:1fr; gap:31px; }
+  .advantage-card h3 { margin-top:15px; font-size:22px; }
+  .advantage-card p { font-size:16px; }
+  .advantages-cta { margin-top:34px; }
   .desktop-only { display:none; }
   .payments-section { min-height:2023px; padding-top:50px; }
   .payments-section h2 { margin-bottom:58px; font-size:36px; }
@@ -259,7 +283,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
   .quiz-topbar { position:relative; grid-template-columns:34px 1fr 34px; min-height:45px; }
   .quiz-progress { padding:0 8px; }
   .quiz-progress strong { font-size:14px; }
-  .gift-pin { margin:10px 0 16px; padding:11px 14px; font-size:15px; }
   .quiz-question { display:block; }
   .quiz-image,.purpose-question .quiz-image { width:100%; height:244px; border-radius:9px; }
   .quiz-question h2,.purpose-question h2 { margin:35px 0 26px; font-size:23px; line-height:1.35; }
@@ -267,19 +290,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
   .quiz-options button { min-height:42px; padding:9px 12px; border-radius:10px; font-size:15px; }
   .purpose-options { grid-template-columns:1fr 1fr; }
   .purpose-options button { min-height:90px; text-align:center; font-size:17px; }
-  .gift-stage,.gift-win,.bridge-stage,.messenger-stage,.contact-stage,.success-stage { margin-top:8px; }
+  .gift-stage,.bridge-stage,.messenger-stage,.contact-stage,.success-stage { margin-top:8px; }
   .gift-stage h2 { margin:42px 0 42px; font-size:25px; }
   .gift-reel { margin-bottom:46px; }
   .gift-button { width:260px; }
-  .gift-win { padding-top:0; }.gift-celebration { font-size:30px; }.gift-win h2 { margin-top:5px; font-size:23px; }
-  .travel-certificate { margin-top:13px; border-radius:14px; }
-  .travel-certificate-copy { padding:12px 11px 10px; }
-  .travel-certificate-logo { width:52px; margin-bottom:4px; }
-  .travel-certificate-copy>span { font-size:7px; letter-spacing:1px; }
-  .travel-certificate-copy>strong { margin-top:4px; font-size:13px; }
-  .travel-certificate-copy>strong b { margin-top:2px; font-size:22px; }
-  .travel-certificate-copy>em { margin-top:6px; padding:4px 6px; font-size:9px; }
-  .travel-certificate-copy>small { font-size:6.5px; }
   .bridge-stage { padding:90px 14px 0; }
   .bridge-stage h2 { font-size:28px; }.bridge-stage dl { font-size:14px; }
   .messenger-stage h2 { margin:44px 0 30px; font-size:23px; line-height:1.35; }

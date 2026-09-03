@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build",
+    "build:timeweb": "TIMEWEB_STATIC_EXPORT=true NEXT_PUBLIC_LEAD_ENDPOINT=/api/lead.php next build --webpack && node scripts/prepare-timeweb.mjs",
     "start": "vinext start",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "test:e2e": "playwright test"

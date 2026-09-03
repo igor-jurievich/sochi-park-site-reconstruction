@@ -42,5 +42,5 @@ test('mobile hero phrase is typed character by character', async ({ page }) => {
   expect(firstSample?.length).toBeGreaterThan(0);
   expect(secondSample?.startsWith(firstSample || '')).toBe(true);
   expect(secondSample!.length).toBeGreaterThan(firstSample!.length);
-  await expect(page.locator('.hero-rotator')).toHaveAttribute('aria-label', 'Море от 1 минуты');
+  await expect(page.locator('.hero-rotator')).toHaveAttribute('aria-label', /Бизнес-класс в микрорайоне Бытха|До моря около 1 500 м|Школа и детский сад рядом|Планировки для жизни и аренды/);
 });

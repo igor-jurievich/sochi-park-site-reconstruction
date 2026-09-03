@@ -50,3 +50,37 @@ test('an autofilled legacy honeypot never causes a silent successful drop', asyn
     process.env.GOOGLE_SHEETS_WEBHOOK_SECRET = originalSheetSecret;
   }
 });
+
+test('a configured table accepts a lead when Bitrix24 is intentionally not connected', async () => {
+  const originalFetch = globalThis.fetch;
+  const originalBitrixUrl = process.env.BITRIX24_WEBHOOK_URL;
+  const originalSheetUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+  const originalSheetSecret = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET;
+  const calls: string[] = [];
+
+  delete process.env.BITRIX24_WEBHOOK_URL;
+  process.env.GOOGLE_SHEETS_WEBHOOK_URL = 'https://sheets.test/exec';
+  process.env.GOOGLE_SHEETS_WEBHOOK_SECRET = 'test-secret';
+  globalThis.fetch = async (input) => {
+    const url = String(input);
+    calls.push(url);
+    return url === 'https://sheets.test/exec' ? Response.json({ ok: true }) : Response.json({ error: 'unexpected URL' }, { status: 500 });
+  };
+
+  try {
+    const request = new Request('https://landing.test/api/leads', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin: 'https://landing.test', host: 'landing.test' },
+      body: JSON.stringify({ leadId: 'sheet-only-test', countryCode: '+7', phone: '9123456789', consent: true, attribution: {} }),
+    });
+    const response = await POST(request);
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toMatchObject({ ok: true, sheetStored: true });
+    expect(calls).toEqual(['https://sheets.test/exec']);
+  } finally {
+    globalThis.fetch = originalFetch;
+    process.env.BITRIX24_WEBHOOK_URL = originalBitrixUrl;
+    process.env.GOOGLE_SHEETS_WEBHOOK_URL = originalSheetUrl;
+    process.env.GOOGLE_SHEETS_WEBHOOK_SECRET = originalSheetSecret;
+  }
+});

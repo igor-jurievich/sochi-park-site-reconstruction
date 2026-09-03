@@ -207,18 +207,21 @@ export async function POST(request: Request) {
   const comment = buildComment(data, createdAt);
   let bitrixLeadId = '';
   let bitrixError = '';
-  try {
-    bitrixLeadId = await createBitrixLead(data, comment);
-    logLeadEvent('bitrix_created', { leadId: data.leadId, bitrixLeadId });
-  } catch (error) {
-    bitrixError = errorMessage(error, 'Неизвестная ошибка Bitrix24');
-    logLeadEvent('bitrix_failed', { leadId: data.leadId, error: bitrixError });
+  const bitrixConfigured = Boolean(process.env.BITRIX24_WEBHOOK_URL?.trim());
+  if (bitrixConfigured) {
+    try {
+      bitrixLeadId = await createBitrixLead(data, comment);
+      logLeadEvent('bitrix_created', { leadId: data.leadId, bitrixLeadId });
+    } catch (error) {
+      bitrixError = errorMessage(error, 'Неизвестная ошибка Bitrix24');
+      logLeadEvent('bitrix_failed', { leadId: data.leadId, error: bitrixError });
+    }
   }
 
   const device = `${maskIp(ip)} · ${cleanText(request.headers.get('user-agent'), 350)}`;
   const a = data.attribution;
   const row = [
-    data.leadId, createdAt, bitrixLeadId ? 'Создан в Bitrix24' : 'Ошибка Bitrix24', bitrixLeadId,
+    data.leadId, createdAt, bitrixLeadId ? 'Создан в Bitrix24' : bitrixConfigured ? 'Ошибка Bitrix24' : 'Bitrix24 не настроен', bitrixLeadId,
     data.name, data.fullPhone, data.messenger, a.landingUrl, data.block, data.purpose, data.rooms, data.finish,
     data.promo, data.gift, a.utmSource, a.utmMedium, a.utmCampaign, a.utmContent, a.utmTerm,
     a.avitoCampaignId, a.avitoAdGroupId, a.avitoAdId, a.avitoClickId, a.referrer, device,
@@ -226,15 +229,18 @@ export async function POST(request: Request) {
   ];
 
   let sheetStored = false;
+  let sheetConfigured = false;
   try {
-    sheetStored = (await appendGoogleSheet(row)).ok;
+    const sheetResult = await appendGoogleSheet(row);
+    sheetStored = sheetResult.ok;
+    sheetConfigured = sheetResult.configured;
     logLeadEvent(sheetStored ? 'sheet_stored' : 'sheet_not_configured', { leadId: data.leadId, bitrixLeadId });
   } catch (error) {
     logLeadEvent('sheet_failed', { leadId: data.leadId, bitrixLeadId, error: errorMessage(error, 'Неизвестная ошибка Google Sheets') });
   }
 
-  if (!bitrixLeadId) {
-    logLeadEvent('request_failed', { leadId: data.leadId, sheetStored });
+  if (!bitrixLeadId && !sheetStored) {
+    logLeadEvent('request_failed', { leadId: data.leadId, bitrixConfigured, sheetConfigured, sheetStored });
     return Response.json({ ok: false, error: 'Не удалось передать заявку менеджеру. Попробуйте ещё раз.', leadId: data.leadId, sheetStored }, { status: 502 });
   }
 

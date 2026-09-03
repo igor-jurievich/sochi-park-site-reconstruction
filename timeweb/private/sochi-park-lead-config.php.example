@@ -1,0 +1,6 @@
+<?php
+// Copy this file to ../private/sochi-park-lead-config.php on Timeweb.
+// That private directory must sit next to public_html, not inside it.
+return [
+    'bitrix24_webhook_url' => 'https://YOUR_BITRIX24_PORTAL/rest/USER_ID/WEBHOOK_TOKEN',
+];

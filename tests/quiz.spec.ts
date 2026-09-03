@@ -44,7 +44,6 @@ test('main path reaches local success with validation', async ({ page }) => {
   await page.getByRole('button', { name: 'Смотреть мою подборку', exact: true }).click();
   await expect(page.getByText('Необходимо согласиться с политикой конфиденциальности')).toBeVisible();
   await page.locator('.consent input').check();
-  await page.getByPlaceholder('Как вас зовут?').fill('Тест');
   await page.getByRole('button', { name: 'Смотреть мою подборку', exact: true }).click();
   await page.clock.fastForward(3600);
   await expect(page).toHaveURL(/\/spasibo\.html\?region=eu$/);
@@ -68,20 +67,19 @@ test('submission sends quiz, source block and advertising attribution', async ({
   await page.getByRole('button', { name: 'Telegram', exact: true }).click();
   await page.clock.fastForward(500);
   await page.getByLabel('Телефон').fill('9123456789');
-  await page.getByPlaceholder('Как вас зовут?').fill('Тест');
   await page.getByRole('button', { name: 'Смотреть мою подборку', exact: true }).click();
 
   await expect.poll(() => captured).toBeTruthy();
   expect(captured).toMatchObject({
     purpose: 'Жить на море', rooms: 'Студия', finish: 'Ремонт', promo: 'Без первого взноса',
-    messenger: 'telegram', countryCode: '+7', phone: '9123456789', name: 'Тест',
+    messenger: 'telegram', countryCode: '+7', phone: '9123456789',
     block: 'Первый экран / Для жизни', consent: true,
     attribution: { utmSource: 'avito', utmMedium: 'cpc', utmCampaign: 'test-campaign', avitoClickId: 'test-click' },
   });
   expect(captured).not.toHaveProperty('website');
 });
 
-test('all 11 landing-page entry buttons open the quiz', async ({ page }) => {
+test('all 12 landing-page entry buttons open the quiz', async ({ page }) => {
   await gotoReady(page);
   const quiz = page.getByLabel('Подбор квартир');
 
@@ -93,8 +91,8 @@ test('all 11 landing-page entry buttons open the quiz', async ({ page }) => {
   }
 
   const sectionButtons = page.locator('.section-cta');
-  await expect(sectionButtons).toHaveCount(7);
-  for (let index = 0; index < 7; index += 1) {
+  await expect(sectionButtons).toHaveCount(8);
+  for (let index = 0; index < 8; index += 1) {
     await sectionButtons.nth(index).click();
     await expect(quiz).toBeVisible();
     await quiz.getByRole('button', { name: 'Закрыть' }).click();
@@ -129,7 +127,7 @@ test('mobile modal has no horizontal overflow', async ({ page }) => {
   expect(overflow).toBe(false);
 });
 
-test('gift reel moves through prize rows before landing on the Turkey trip', async ({ page }) => {
+test('gift reel moves through prize rows before taking the visitor straight to the final question', async ({ page }) => {
   await gotoReady(page);
   await page.getByRole('button', { name: 'Жить', exact: true }).click();
   await page.getByRole('button', { name: 'Студия', exact: true }).click();
@@ -148,8 +146,8 @@ test('gift reel moves through prize rows before landing on the Turkey trip', asy
   expect(firstMove).toBeLessThan(before - 1);
   expect(secondMove).toBeLessThan(firstMove - 1);
   await expect(page.getByRole('button', { name: 'Определяем приз…' })).toBeDisabled();
-  await expect(page.getByText('ТУРЦИЮ 🇹🇷', { exact: true })).toBeVisible({ timeout: 5000 });
-  await expect(page.locator('.travel-certificate-bg')).toHaveAttribute('src', '/images/turkey-gift-certificate-bg.webp');
+  await expect(page.getByText('Какую акцию включить в Вашу подборку?')).toBeVisible({ timeout: 5000 });
+  await expect(page.locator('.gift-win')).toHaveCount(0);
 });
 
 test('every short-page quiz answer advances and Back restores its question', async ({ page }) => {

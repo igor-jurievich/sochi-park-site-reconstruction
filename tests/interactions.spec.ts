@@ -42,26 +42,3 @@ test('primary controls expose hover and keyboard-focus states', async ({ page })
   const outline = await purpose.evaluate((element) => getComputedStyle(element).outlineStyle);
   expect(outline).not.toBe('none');
 });
-
-test('long-page lightbox and video close from backdrop and Escape', async ({ page }) => {
-  await page.goto('/kvartiry-sochi.html');
-
-  await page.locator('.gal-item').first().click();
-  const lightbox = page.locator('.lb-overlay').first();
-  await expect(lightbox).toHaveClass(/open|show|active/);
-  await page.keyboard.press('Escape');
-  await expect(lightbox).not.toHaveClass(/open|show|active/);
-
-  await page.locator('.gal-item').first().click();
-  await lightbox.click({ position: { x: 4, y: 4 } });
-  await expect(lightbox).not.toHaveClass(/open|show|active/);
-
-  await page.locator('#videoLink').click();
-  await expect(page.locator('#videoModal')).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(page.locator('#videoModal')).toBeHidden();
-
-  await page.locator('#videoLink').click();
-  await page.locator('#videoModal').click({ position: { x: 4, y: 4 } });
-  await expect(page.locator('#videoModal')).toBeHidden();
-});

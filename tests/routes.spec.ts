@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
 
 const routes = [
-  ['/', /Смотрите подборки/],
-  ['/index_ctrl113.html', /Смотрите подборки/],
-  ['/index_gift2_113.html', /Смотрите подборки/],
-  ['/kvartiry-sochi.html', /Своя квартира в ЖК Сочи Парк/],
+  ['/', /Квартиры в ЖК/],
+  ['/index_ctrl113.html', /Квартиры в ЖК/],
+  ['/index_gift2_113.html', /Квартиры в ЖК/],
+  ['/kvartiry-sochi.html', /Квартиры в ЖК/],
   ['/privacy.html', /Политика обработки персональных данных/],
   ['/policy.html', /Политика конфиденциальности и Cookie/],
   ['/spasibo.html?region=eu', /Уже готовим вашу подборку/],
@@ -25,12 +25,9 @@ for (const [route, heading] of routes) {
   });
 }
 
-test('long-page local assets do not depend on the source host', async ({ page }) => {
-  const sourceRequests: string[] = [];
-  page.on('request', (request) => {
-    if (/sochipark-info\.ru/i.test(request.url())) sourceRequests.push(request.url());
-  });
-  await page.goto('/kvartiry-sochi.html');
-  await page.waitForLoadState('networkidle');
-  expect(sourceRequests).toEqual([]);
+test('legacy entry routes permanently converge on the one canonical landing page', async ({ page }) => {
+  for (const path of ['/index_ctrl113.html', '/index_gift2_113.html', '/kvartiry-sochi.html']) {
+    await page.goto(path);
+    await expect(page).toHaveURL(/\/$/);
+  }
 });

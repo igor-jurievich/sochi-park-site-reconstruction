@@ -7,7 +7,6 @@ export type LeadPayload = {
   messenger: string;
   countryCode: string;
   phone: string;
-  name?: string;
   block: string;
   apartmentCount: number;
   consent: boolean;
@@ -60,8 +59,15 @@ function readAttribution(): Attribution {
   return current;
 }
 
+function leadEndpoint() {
+  if (process.env.NEXT_PUBLIC_LEAD_ENDPOINT) return process.env.NEXT_PUBLIC_LEAD_ENDPOINT;
+  const hostname = window.location.hostname.toLowerCase();
+  if (hostname === 'sochipark23.ru' || hostname === 'www.sochipark23.ru' || hostname.endsWith('.tw1.ru')) return '/api/lead.php';
+  return '/api/leads';
+}
+
 export async function submitLead(payload: LeadPayload) {
-  const response = await fetch('/api/leads', {
+  const response = await fetch(leadEndpoint(), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify({
