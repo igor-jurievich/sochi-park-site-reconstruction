@@ -1,0 +1,33 @@
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Canonical production address. Keep technical Timeweb hostnames usable.
+  RewriteCond %{HTTP_HOST} ^(?:www\.)?sochipark23\.ru(?::\d+)?$ [NC]
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} ^www\.sochipark23\.ru(?::\d+)?$ [NC]
+  RewriteRule ^ https://sochipark23.ru%{REQUEST_URI} [R=301,L]
+
+  # Collapse former landing URLs to the sole canonical page.
+  RewriteRule ^(?:index_ctrl113|index_gift2_113|kvartiry-sochi)\.html$ / [R=301,L,NC]
+
+  # Preserve direct links that were previously routed by Next.js.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^spasibo/?$ /spasibo.html [L]
+  RewriteRule ^spasibo2/?$ /spasibo2.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>
+
+<FilesMatch "^\\.(?!well-known)">
+  Require all denied
+</FilesMatch>

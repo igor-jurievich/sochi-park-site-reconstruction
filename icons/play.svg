@@ -1,0 +1,6 @@
+<svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Круг -->
+                    <circle cx="45" cy="45" r="43.5" stroke="white" stroke-width="3"></circle>
+                    <!-- Треугольник -->
+                    <path d="M35 28L62 45L35 62V28Z" fill="white"></path>
+                  </svg>
