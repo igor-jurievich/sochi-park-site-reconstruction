@@ -11,11 +11,11 @@ DirectoryIndex index.html
 
   # `next export` creates same-named folders as well as the .html pages. Redirect
   # these former route aliases before Apache treats the folders as directory URLs.
-  RewriteRule ^spasibo/?$ /spasibo.html [R=302,L,NE]
-  RewriteRule ^spasibo2/?$ /spasibo2.html [R=302,L,NE]
+  RewriteRule ^spasibo/?$ https://sochipark23.ru/spasibo.html [R=302,L,NE]
+  RewriteRule ^spasibo2/?$ https://sochipark23.ru/spasibo2.html [R=302,L,NE]
 
   # Collapse former landing URLs to the sole canonical page.
-  RewriteRule ^(?:index_ctrl113|index_gift2_113|kvartiry-sochi)\.html$ / [R=301,L,NC]
+  RewriteRule ^(?:index_ctrl113|index_gift2_113|kvartiry-sochi)\.html$ https://sochipark23.ru/ [R=301,L,NC]
 </IfModule>
 
 <IfModule mod_headers.c>

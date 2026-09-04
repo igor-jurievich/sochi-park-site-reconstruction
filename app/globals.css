@@ -1,9 +1,22 @@
 @import 'tailwindcss';
 
-:root { --primary:#3478f6; --primary-deep:#1438ff; --accent:#ff8a00; --text:#1e2022; --muted:#5f6368; --surface-muted:#f7f9fb; }
+:root {
+  --primary:#3478f6;
+  --primary-deep:#1438ff;
+  --accent:#ff8a00;
+  --text:#1e2022;
+  --muted:#5f6368;
+  --surface-muted:#f7f9fb;
+  --font-sans:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --weight-body:400;
+  --weight-emphasis:600;
+  --weight-heading:700;
+  --weight-display:800;
+}
 * { box-sizing: border-box; }
 html { max-width:100%; overflow-x:hidden; scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-body { max-width:100%; margin:0; overflow-x:hidden; color:var(--text); background:#fff; font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif; }
+body { max-width:100%; margin:0; overflow-x:hidden; color:var(--text); background:#fff; font-family:var(--font-sans); font-weight:var(--weight-body); }
+h1,h2,h3 { font-family:inherit; font-weight:var(--weight-heading); }
 button,input,select { font:inherit; }
 button { -webkit-appearance:none; appearance:none; }
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid #ff9500; outline-offset:3px; }
@@ -57,7 +70,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .complex-facts>div { min-height:134px; padding:24px 20px; border:1px solid #e2e6ea; border-radius:16px; background:#fff; text-align:center; box-shadow:0 10px 24px rgba(20,40,80,.04); }
 .complex-facts dt { color:#7a7f86; font-size:14px; }
 .complex-facts dd { margin:10px 0 0; color:#24272b; font-size:23px; line-height:1.15; font-weight:700; }
-.blue-button { position:relative; overflow:hidden; border:0; border-radius:2px; color:#fff; background:#153bff; font-weight:600; letter-spacing:2px; cursor:pointer; }
+.blue-button { position:relative; overflow:hidden; border:0; border-radius:2px; color:#fff; background:#153bff; font-weight:var(--weight-heading); letter-spacing:2px; cursor:pointer; }
 .blue-button::after { content:""; position:absolute; inset:-60% auto -60% -55%; width:28%; transform:rotate(22deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,.62),transparent); animation:button-shine 3.5s ease-in-out infinite; }
 .blue-button:hover { background:#0e31e5; }
 .blue-button:disabled { cursor:wait; opacity:.65; }
@@ -65,7 +78,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .section-cta { width:100%; min-height:86px; padding:17px 18px; font-size:16px; line-height:1.55; text-transform:uppercase; }
 
 .prices-section { min-height:825px; padding:50px 0 40px; background:#fff; }
-.prices-section h2,.payments-section h2 { margin:0 0 28px; text-align:center; color:#1e2022; font-size:60px; line-height:1.1; font-weight:600; letter-spacing:-2px; }
+.prices-section h2,.payments-section h2 { margin:0 0 28px; text-align:center; color:#1e2022; font-size:60px; line-height:1.1; font-weight:var(--weight-heading); letter-spacing:-2px; }
 .section-intro { max-width:690px; margin:-7px auto 32px; color:#64696f; text-align:center; font-size:17px; line-height:1.5; }
 .apartment-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
 .apartment-card { display:flex; min-width:0; flex-direction:column; overflow:hidden; border:1px solid #aeb1b5; background:#fff; }
@@ -91,9 +104,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 
 .investor-section { min-height:1022px; padding:50px 0 40px; text-align:center; background:#fff; }
 .eyebrow { margin:0 0 7px; text-transform:uppercase; font-size:14px; letter-spacing:.5px; }
-.investor-section h2 { margin:0; font-size:60px; line-height:1.1; font-weight:600; letter-spacing:-1.8px; }
+.investor-section h2 { margin:0; font-size:60px; line-height:1.1; font-weight:var(--weight-heading); letter-spacing:-1.8px; }
 .investor-section h2+p { margin:23px 0 46px; font-size:17px; color:#555; }
-.investor-section h3 { margin:0 0 32px; font-size:25px; font-weight:500; }
+.investor-section h3 { margin:0 0 32px; font-size:25px; font-weight:var(--weight-heading); }
 .investor-section picture { display:block; width:640px; max-width:100%; margin:0 auto 38px; }
 .investor-section picture img { display:block; width:100%; height:auto; }
 .investor-section .section-cta { width:270px; min-height:62px; }
@@ -112,7 +125,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .payments-section h2 { margin-bottom:28px; }
 .payment-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:29px; }
 .payment-card { min-height:606px; display:flex; flex-direction:column; padding:47px 23px 40px; background:#fff; box-shadow:0 10px 24px rgba(20,40,80,.05); }
-.payment-card h3 { margin:0; text-align:center; font-size:25px; font-weight:500; }
+.payment-card h3 { margin:0; text-align:center; font-size:25px; font-weight:var(--weight-heading); }
 .payment-card>p { margin:6px 0 10px; text-align:center; color:#666; font-size:14px; }
 .payment-value { display:flex; align-items:flex-end; justify-content:center; margin:4px 0 48px; font-size:58px; line-height:1; white-space:nowrap; }
 .payment-value sup { align-self:center; margin-right:2px; font-size:24px; }
@@ -124,7 +137,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 
 .contact-section { min-height:416px; padding:50px 0; background:#fff; }
 .contact-section .content { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:36px; }
-.contact-section h2 { margin:0 0 32px; font-size:25px; font-weight:500; }
+.contact-section h2 { margin:0 0 32px; font-size:25px; font-weight:var(--weight-heading); }
 .contact-section p { margin:0; color:#3d4043; font-size:14px; line-height:1.7; }
 .contact-section a { color:inherit; text-decoration:none; }
 .contact-section img { width:100%; height:314px; object-fit:cover; }
@@ -166,7 +179,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .quiz-image { grid-area:image; display:block; width:100%; height:510px; border-radius:12px; object-fit:cover; }
 .quiz-question h2 { grid-area:title; margin:18px 0 28px; font-size:30px; line-height:1.2; }
 .quiz-options { grid-area:options; display:grid; gap:10px; }
-.quiz-options button { display:flex; align-items:center; min-height:58px; padding:12px 18px; border:1px solid #2f67ef; border-radius:10px; color:#fff; background:#2f67ef; text-align:left; font-weight:600; cursor:pointer; box-shadow:0 2px 3px rgba(16,55,160,.24); transition:background .2s,border-color .2s,transform .2s,box-shadow .2s; }
+.quiz-options button { display:flex; align-items:center; min-height:58px; padding:12px 18px; border:1px solid #2f67ef; border-radius:10px; color:#fff; background:#2f67ef; text-align:left; font-weight:var(--weight-heading); cursor:pointer; box-shadow:0 2px 3px rgba(16,55,160,.24); transition:background .2s,border-color .2s,transform .2s,box-shadow .2s; }
 .quiz-options button:hover,.quiz-options button.selected { border-color:#1c56e8; background:#1c56e8; box-shadow:0 4px 9px rgba(16,55,160,.32); transform:translateY(-1px); }
 .quiz-radio { width:20px; height:20px; margin-right:12px; border:2px solid rgba(255,255,255,.68); border-radius:50%; background:rgba(255,255,255,.18); }
 .quiz-options button.selected .quiz-radio { border:5px solid #fff; background:#42cb29; }
@@ -174,7 +187,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .purpose-question .quiz-image { height:330px; }
 .purpose-question h2 { margin:30px 0 26px; }
 .purpose-options { grid-template-columns:1fr 1fr; }
-.purpose-options button { justify-content:center; min-height:86px; font-size:18px; font-weight:600; }
+.purpose-options button { justify-content:center; min-height:86px; font-size:18px; font-weight:var(--weight-heading); }
 
 .gift-stage,.bridge-stage,.messenger-stage,.contact-stage,.success-stage { width:min(700px,100%); margin:18px auto 0; text-align:center; }
 .gift-stage h2 { margin:30px auto 46px; max-width:680px; font-size:32px; line-height:1.25; }
